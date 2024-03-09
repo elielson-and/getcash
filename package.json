@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "laravel-precognition-vue-inertia": "^0.5.4",
-        "sass": "^1.71.1"
+        "sass": "^1.71.1",
+        "vue3-lottie": "^3.2.0"
     }
 }
