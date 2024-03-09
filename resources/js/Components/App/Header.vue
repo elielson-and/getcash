@@ -9,12 +9,16 @@ import HeroCash from '@/Lottie/HeroCash.json';
 <template>
     <header class="w-full  relative">
         <div class="max-w-7xl relative mx-auto  p-2">
-            <HeaderBubble class="absolute top-0 right-0 w-3/4 z-0" />
+            <HeaderBubble class="absolute top-0 right-0 w-full md:w-3/4 z-0" />
 
             <Navbar class="sticky z-10" />
             <div class="w-full flex mt-4">
-                <div class="w-[42%] z-10">
-                    <h2 class="mt-6 text-gray-600 text-5xl">Saia do aperto de forma prática, rápida e segura!</h2>
+                <div class="w-full md:w-[42%] z-10 ">
+                    <h2 class="mt-6 md:hidden text-blue-800 font-bold text-6xl">Saia do aperto agora mesmo!💰</h2>
+                    <h2 class="hidden md:flex mt-6 text-gray-600 text-5xl">Saia do aperto de forma
+                        prática,
+                        rápida e
+                        segura!</h2>
                     <p class="my-6 text-2xl text-gray-600">Não realizamos <s>consulta de crédito</s>. <br> Clique no
                         botão abaixo para conferir as ofertas e valores disponíveis agora mesmo.</p>
                     <button
@@ -31,7 +35,7 @@ import HeroCash from '@/Lottie/HeroCash.json';
                     </button>
 
                 </div>
-                <div class="w-[58%] relative z-0 ">
+                <div class="hidden md:flex md:w-[58%] relative z-0 ">
                     <Vue3Lottie class="z-10 relative -top-12 -left-12" :animationData="HeroCash" :width="750"
                         :loop="true" :speed="1" />
                 </div>
