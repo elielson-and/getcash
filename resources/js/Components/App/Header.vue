@@ -31,7 +31,7 @@ import HeroCash from '@/Lottie/HeroCash.json';
                     </button>
 
                 </div>
-                <div class="w-[58%] relative z-10 ">
+                <div class="w-[58%] relative z-0 ">
                     <Vue3Lottie class="z-10 relative -top-12 -left-12" :animationData="HeroCash" :width="750"
                         :loop="true" :speed="1" />
                 </div>
