@@ -45,4 +45,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+
+
+// client auth test
+Route::middleware(['client'])->group(function () {
+    // Coloque aqui as rotas protegidas pelo middleware de autenticação por CPF
+    Route::get('/painel-do-cliente', function () {
+        return Inertia::render('Client/Dashboard');
+    });
+});
+
+
+
 require __DIR__ . '/auth.php';

@@ -10,23 +10,22 @@ import { FingerPrintIcon } from '@heroicons/vue/24/solid'
 import { TheMask } from 'vue-the-mask'
 
 defineProps({
-    canResetPassword: {
-        type: Boolean,
-    },
+    // canResetPassword: {
+    //     type: Boolean,
+    // },
     status: {
         type: String,
     },
 });
 
 const form = useForm({
-    email: '',
-    password: '',
-    remember: false,
+    cpf: '',
 });
 
 const submit = () => {
-    form.post(route('login'), {
-        onFinish: () => form.reset('password'),
+    form.cpf = form.cpf.replace(/\D/g, '');
+    form.post(route('logar-cliente'), {
+        onFinish: () => form.reset('cpf'),
     });
 };
 </script>
@@ -52,47 +51,51 @@ const submit = () => {
                     <h2 class="mb-9 text-2xl font-bold text-gray-500 sm:text-title-xl2">
                         Acesse seu painel
                     </h2>
+                    <form @submit.prevent="submit">
 
-                    <div class="mb-4">
-                        <label class="mb-2.5 block font-medium text-black ">Digite seu CPF:</label>
+                        <div class="mb-4">
+                            <label class="mb-2.5 block font-medium text-black ">Digite seu CPF:</label>
 
-                        <label class="input input-bordered flex items-center gap-2">
-                            <input v-mask="'###.###.###-##'" type="text"
-                                class="grow text-xl border-none focus:ring-0 shadow-none"
-                                placeholder="___.___.___-__" />
-                            <FingerPrintIcon class="w-6" />
-                        </label>
+                            <label class="input input-bordered flex items-center gap-2">
+                                <input v-mask="'###.###.###-##'" v-model="form.cpf" type="text"
+                                    class="grow text-xl border-none focus:ring-0 shadow-none"
+                                    placeholder="___.___.___-__" />
+                                <FingerPrintIcon class="w-6" />
+                            </label>
 
-                    </div>
-
-                    <div v-if="true" role="alert" class="alert alert-error mb-2 text-red-600 bg-red-100 ">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6 hidden sm:block"
-                            fill="none" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>Cliente não encontrado. Caso não tenha cadastro
-                            <Link href="/cadastro" class="text-blue-500 underline">Clique aqui
-                            </Link>
-                        </span>
-
-
-                    </div>
-
-                    <button
-                        class="btn  w-full bg-blue-500 hover:bg-blue-400  px-4 text-white text-xl font-bold transition-all rounded-xl">
-                        Entrar
-                        <div class="icon">
-                            <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                <path
-                                    d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
-                                    fill="currentColor"></path>
-                            </svg>
                         </div>
-                        <!-- <span class="loading loading-spinner"></span> -->
-                    </button>
 
+                        {{
+                        form.errors }}
+                        <div v-if="form.errors.email" role="alert"
+                            class="alert alert-error mb-2 text-red-600 bg-red-100 ">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="stroke-current shrink-0 h-6 w-6 hidden sm:block" fill="none" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>Cliente não encontrado. Caso não tenha cadastro
+                                <Link href="/cadastro" class="text-blue-500 underline">Clique aqui
+                                </Link>
+                            </span>
+
+
+                        </div>
+
+                        <button type="submit"
+                            class="btn  w-full bg-blue-500 hover:bg-blue-400  px-4 text-white text-xl font-bold transition-all rounded-xl">
+                            Entrar
+                            <div class="icon">
+                                <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                    <path
+                                        d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+                                        fill="currentColor"></path>
+                                </svg>
+                            </div>
+                            <!-- <span class="loading loading-spinner"></span> -->
+                        </button>
+                    </form>
                     <p class="text-center my-4 text-gray-500">
                         Não tem conta?
                         <Link href="/cadastro" class=" text-blue-500 hover:underline">Cadastre-se</Link>

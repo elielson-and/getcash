@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\AuthClient;
 use Illuminate\Foundation\Application;
 
 Route::middleware('guest')->group(function () {
@@ -63,6 +64,8 @@ Route::middleware('auth')->group(function () {
 
 
 // Client auth routes
+Route::post('logar-cliente', [AuthClient::class, 'auth'])->name('logar-cliente');
+
 Route::get('/entrar', function () {
     return Inertia::render('Auth/Client/Login');
 });
