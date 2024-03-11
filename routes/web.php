@@ -25,6 +25,12 @@ Route::get('/', function () {
     ]);
 });
 
+Route::middleware(['client'])->group(function () {
+    // Coloque aqui as rotas protegidas pelo middleware de autenticação por CPF
+    Route::get('/painel-do-cliente', function () {
+        return Inertia::render('Teste');
+    });
+});
 
 // Route::get('/a', function () {
 //     return Inertia::render('Welcome', [
