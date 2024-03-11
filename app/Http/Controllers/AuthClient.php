@@ -7,6 +7,8 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\ValidationException;
 
 class AuthClient extends Controller
 {
@@ -23,9 +25,11 @@ class AuthClient extends Controller
 
             // Redireciona o usuário autenticado para a dashboard ou painel do cliente
             return redirect()->intended(RouteServiceProvider::HOME_CLIENT);
-        } else {
-            dd('merda');
         }
+
+        throw ValidationException::withMessages([
+            'cpf' => trans('cpf.failed'),
+        ]);
     }
 
     /**

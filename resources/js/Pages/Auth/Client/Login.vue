@@ -9,14 +9,7 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 import { FingerPrintIcon } from '@heroicons/vue/24/solid'
 import { TheMask } from 'vue-the-mask'
 
-defineProps({
-    // canResetPassword: {
-    //     type: Boolean,
-    // },
-    status: {
-        type: String,
-    },
-});
+defineProps({ errors: Object })
 
 const form = useForm({
     cpf: '',
@@ -65,9 +58,8 @@ const submit = () => {
 
                         </div>
 
-                        {{
-                        form.errors }}
-                        <div v-if="form.errors.email" role="alert"
+
+                        <div v-if="form.errors.cpf" role="alert"
                             class="alert alert-error mb-2 text-red-600 bg-red-100 ">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 class="stroke-current shrink-0 h-6 w-6 hidden sm:block" fill="none" viewBox="0 0 24 24">
