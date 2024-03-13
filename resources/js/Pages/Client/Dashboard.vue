@@ -18,7 +18,7 @@ import { ref } from 'vue';
 
                 <div class="bg-white w-full h-screen overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">You're logged in!</div>
-                    {{ $page.props.auth.user.cpf }}
+                    {{ $page.props.auth.user.name }}
                 </div>
             </div>
         </div>
