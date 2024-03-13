@@ -9,18 +9,27 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 import { FingerPrintIcon } from '@heroicons/vue/24/solid'
 import { TheMask } from 'vue-the-mask'
 
-defineProps({ errors: Object })
+defineProps({
+    canResetPassword: {
+        type: Boolean,
+    },
+    status: {
+        type: String,
+    },
+});
 
 const form = useForm({
-    cpf: '',
+    email: '',
+    password: '',
+    remember: false,
 });
 
 const submit = () => {
-    form.cpf = form.cpf.replace(/\D/g, '');
-    form.post(route('logar-cliente'), {
-        onFinish: () => form.reset('cpf'),
+    form.post(route('login'), {
+        onFinish: () => form.reset('password'),
     });
 };
+
 </script>
 
 <template>
@@ -47,15 +56,21 @@ const submit = () => {
                     <form @submit.prevent="submit">
 
                         <div class="mb-4">
-                            <label class="mb-2.5 block font-medium text-black ">Digite seu CPF:</label>
-
+                            <InputLabel for="email" value="Email" />
                             <label class="input input-bordered flex items-center gap-2">
-                                <input v-mask="'###.###.###-##'" v-model="form.cpf" type="text"
-                                    class="grow text-xl border-none focus:ring-0 shadow-none"
-                                    placeholder="___.___.___-__" />
+                                <input v-model="form.email" type="email"
+                                    class="grow border-none focus:ring-0 shadow-none"
+                                    placeholder="seuemail@email.com" />
                                 <FingerPrintIcon class="w-6" />
                             </label>
-
+                        </div>
+                        <div class="mb-4">
+                            <InputLabel for="password" value="Senha" />
+                            <label class="input input-bordered flex items-center gap-2">
+                                <input v-model="form.password" type="password"
+                                    class="grow border-none focus:ring-0 shadow-none" />
+                                <FingerPrintIcon class="w-6" />
+                            </label>
                         </div>
 
 
