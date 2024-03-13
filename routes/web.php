@@ -16,6 +16,8 @@ use Inertia\Inertia;
 |
 */
 
+
+// No middleware
 Route::get('/', function () {
     return Inertia::render('Landing', [
         'canLogin' => Route::has('login'),
@@ -26,36 +28,29 @@ Route::get('/', function () {
 });
 
 
-// Route::get('/a', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
+// Rotas de administrador
+Route::middleware('auth', 'admin', 'verified')->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 
+// Rotas de cliente
+Route::middleware('auth', 'verified')->group(function () {
 
-
-// client auth test
-Route::middleware(['client'])->group(function () {
-    // Coloque aqui as rotas protegidas pelo middleware de autenticação por CPF
     Route::get('/painel-do-cliente', function () {
         return Inertia::render('Client/Dashboard');
     });
-});
 
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
 
 require __DIR__ . '/auth.php';
