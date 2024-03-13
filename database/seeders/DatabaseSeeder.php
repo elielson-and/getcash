@@ -17,11 +17,12 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'name' => 'Admin User',
             'email' => 'admin@example.com',
+            // 'admin' => 1
         ]);
 
-        \App\Models\Client::factory()->create([
-            'name' => 'Test User',
-            'cpf' => '99999999999',
+        \App\Models\User::factory()->create([
+            'name' => 'Client User',
+            'email' => 'client@example.com',
         ]);
     }
 }
