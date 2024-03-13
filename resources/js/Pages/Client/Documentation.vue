@@ -1,10 +1,23 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Sidebar from '@/Components/App/Sidebar.vue'
-import { Head } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { TheMask } from 'vue-the-mask'
 
 
+const form = useForm({
+    email: '',
+    password: '',
+    remember: false,
+});
+
+const submit = () => {
+    form.cpf = form.cpf.replace(/\D/g, '');
+    form.post(route('login'), {
+        onFinish: () => form.reset('password'),
+    });
+};
 </script>
 
 <template>
@@ -71,7 +84,8 @@ import { ref } from 'vue';
                                 <label class="label">
                                     <span class="label-text">CPF:</span>
                                 </label>
-                                <input type="text" placeholder="Digite seu CPF" class="input input-bordered" />
+                                <input v-mask="'###.###.###-##'" type="text" placeholder="Digite seu CPF"
+                                    class="input input-bordered" />
                             </div>
                             <div class="form-control">
                                 <label class="label">
@@ -101,7 +115,8 @@ import { ref } from 'vue';
                                 <label class="label">
                                     <span class="label-text">Telefone:</span>
                                 </label>
-                                <input type="tel" placeholder="Digite seu telefone" class="input input-bordered" />
+                                <input v-mask="'(##) #####-####'" type="tel" placeholder="Digite seu telefone"
+                                    class="input input-bordered" />
                             </div>
                             <div class="form-control">
                                 <label class="label">
