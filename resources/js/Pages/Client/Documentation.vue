@@ -2,20 +2,48 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Sidebar from '@/Components/App/Sidebar.vue'
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import axios from 'axios';
 import { ref } from 'vue';
 import { TheMask } from 'vue-the-mask'
 
 
 const form = useForm({
-    email: '',
-    password: '',
-    remember: false,
+    cpf: '',
+    fullName: '',
+    gender: '',
+    birthDate: '',
+    phone: '',
+    address: ''
+});
+
+
+// handle cpf
+
+async function fetchCpfData(cpf) {
+    try {
+        // Substitua 'https://seu-endpoint-api.com/cpf' pelo endpoint correto
+        const response = await axios.get(`https://dbftools.pro/api/tools/search-cpf/${cpf}`);
+        // Aqui você tem acesso aos dados retornados
+        console.log(response.data);
+        // Prossiga com o que deseja fazer com os dados
+    } catch (error) {
+        console.error('Erro ao buscar dados do CPF:', error);
+        // Trate o erro conforme necessário
+    }
+}
+
+const handleCpf = (() => {
+    // Remove caracteres não numéricos
+    var cpf = form.cpf.replace(/\D/g, '');
+    if (cpf.length == 11) {
+        fetchCpfData(cpf)
+    }
 });
 
 const submit = () => {
     form.cpf = form.cpf.replace(/\D/g, '');
-    form.post(route('login'), {
-        onFinish: () => form.reset('password'),
+    form.post(route('save-documentation'), {
+        // onFinish: () => form.reset('c'),
     });
 };
 </script>
@@ -84,8 +112,8 @@ const submit = () => {
                                 <label class="label">
                                     <span class="label-text">CPF:</span>
                                 </label>
-                                <input v-mask="'###.###.###-##'" type="text" placeholder="Digite seu CPF"
-                                    class="input input-bordered" />
+                                <input v-mask="'###.###.###-##'" v-on:keyup="handleCpf" type="text"
+                                    placeholder="Digite seu CPF" v-model="form.cpf" class="input input-bordered" />
                             </div>
                             <div class="form-control">
                                 <label class="label">
