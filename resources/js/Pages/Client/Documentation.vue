@@ -10,6 +10,10 @@ import { TheMask } from 'vue-the-mask';
 import { FingerPrintIcon } from '@heroicons/vue/24/solid';
 import { computed } from 'vue';
 
+import { usePage } from '@inertiajs/vue3'
+const page = usePage()
+const status = computed(() => page.props.status)
+
 const isLoading = ref(false);
 const fetchedData = ref('');
 const formStep = ref(null);
@@ -33,7 +37,9 @@ const form = useForm({
     birthDate: '',
     phone: '',
     address: '',
-    email: ''
+    email: '',
+    selfie_img: null,
+    rg_img: null
 });
 
 // Atualiza os dados do formulário com os dados buscados
@@ -44,6 +50,7 @@ const updateFormData = (data) => {
     form.phone = data.phone || form.phone;
     form.address = data.address || form.address;
     form.email = data.email || form.email; // Assumindo que você adicionará suporte a e-mail na resposta da API
+
 };
 
 async function fetchCpfData(cpf) {
@@ -100,6 +107,14 @@ const submit = () => {
     form.post(route('document.store'), {
     });
 };
+
+function handleFileUpload(event, fieldName) {
+    const file = event.target.files[0];
+    if (file) {
+        // Isso irá atualizar o objeto `form` com o arquivo
+        form[fieldName] = file;
+    }
+}
 </script>
 
 
@@ -121,7 +136,8 @@ const submit = () => {
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
                             </svg>
-                            Envio de documentação
+                            Envio de documentação | {{ status }}
+                            <img :src="'/storage/images/selfie_171126192469657270.jpg'" class="w-24 h-24" alt="">
                         </div>
                     </div>
                     <!-- {{ $page.props.auth.user.name }} -->
@@ -168,7 +184,7 @@ const submit = () => {
                         </div> -->
 
 
-                        <form @submit.prevent="submit">
+                        <form @submit.prevent="submit" enctype="multipart/form-data">
                             <!-- dados -->
                             <div v-if="!formStep" class="w-full"
                                 :class="{ 'animate-fade-right animate-duration-[400ms]': formStep === 0 }">
@@ -264,7 +280,10 @@ const submit = () => {
                                     <div class="w-full flex flex-col md:flex-row justify-center gap-4">
                                         <div class="file-upload">
                                             <label class="file-upload-label">
-                                                <input type="file" name="selfie">
+                                                <!-- <input type="file" v-model="form.selfie_img"> -->
+                                                <input type="file" @change="handleFileUpload($event, 'selfie_img')"
+                                                    name="selfie_img">
+
                                                 <!-- <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" ...></svg> -->
                                                 <img src="@/Images/selfie.png" class="w-40">
                                                 <!-- ícone de upload -->
@@ -275,7 +294,9 @@ const submit = () => {
                                         </div>
                                         <div class="file-upload">
                                             <label class="file-upload-label">
-                                                <input type="file" name="rg">
+                                                <!-- <input type="file" name="rg"> -->
+                                                <input type="file" @change="handleFileUpload($event, 'rg_img')"
+                                                    name="rg_img">
                                                 <img src="@/Images/rg.jpg" class="w-40 mb-3">
                                                 <p>Documento de identificação</p>
                                                 <p>Certifique-se de que as informações estarão nítidas na imagem.</p>
@@ -290,7 +311,7 @@ const submit = () => {
                                             <ArrowLeftIcon class="w-6" />
                                             Voltar
                                         </button>
-                                        <button class="btn btn-info bg-blue-500 text-white border-none">
+                                        <button type="submit" class="btn btn-info bg-blue-500 text-white border-none">
                                             Finalizar tudo e enviar
                                             <ArrowUpTrayIcon class="w-6" />
                                         </button>

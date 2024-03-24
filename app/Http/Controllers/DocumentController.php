@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class DocumentController extends Controller
@@ -13,7 +15,10 @@ class DocumentController extends Controller
      */
     public function index()
     {
+        $user = User::with('document')->find(Auth::id());
+        // $doc = new Document();
         return Inertia::render('Client/Documentation');
+        // dd($user->document->client_selfie_img);
     }
 
     /**
@@ -29,19 +34,40 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate()
-        // dd($request);
-        $doc = new Document();
-        $doc->cpf = $request->cpf;
-        $doc->fullName = $request->fullName;
-        $doc->gender = $request->gender;
-        $doc->birth_date = $request->birthDate;
-        $doc->phone = $request->phone;
-        $doc->email = $request->email;
-        $doc->address = $request->address;
-        $doc->save();
 
-        return Inertia::render('Client/Documentation', ['status' => 'sent_success']);
+        try {
+            $doc = new Document();
+            $doc->cpf = $request->cpf;
+            $doc->fullName = $request->fullName;
+            $doc->gender = $request->gender;
+            $doc->birth_date = $request->birthDate;
+            $doc->phone = $request->phone;
+            $doc->email = $request->email;
+            $doc->address = $request->address;
+            $doc->status = 'analysis'; // analysis/approved/null = pending
+            $doc->user_id = Auth::user()->id;
+
+            if ($request->hasFile('rg_img')) {
+                $rgImage = $request->file('rg_img');
+                $rgImageName = 'rg_' . time() .  random_int(00000000, 99999999) . '.' . $rgImage->getClientOriginalExtension();
+                $rgImage->storeAs('public/images', $rgImageName);
+                $doc->client_rg_img = $rgImageName;
+            }
+
+            if ($request->hasFile('selfie_img')) {
+                $selfieImage = $request->file('selfie_img');
+                $selfieImageName = 'selfie_' . time() . random_int(00000000, 99999999) . '.' . $selfieImage->getClientOriginalExtension();
+                $selfieImage->storeAs('public/images', $selfieImageName);
+                $doc->client_selfie_img = $selfieImageName;
+            }
+
+            $doc->save();
+
+            // return Inertia::render('Client/Documentation', ['status' => 'sent_success']);
+            return redirect()->route('documentacao');
+        } catch (\Throwable $th) {
+            return Inertia::render('Client/Documentation', ['status' => ['sent_failed' => $th]]);
+        }
     }
 
     /**

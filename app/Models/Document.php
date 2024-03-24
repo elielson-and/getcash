@@ -15,6 +15,14 @@ class Document extends Model
         'birth_date',
         'phone',
         'email',
-        'address'
+        'address',
+        'client_selfie_img',
+        'client_rg_img',
+        'status'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
