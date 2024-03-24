@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->string('cpf', 11);
+            $table->string('cpf', 11)->unique();
             $table->string('fullName');
             $table->char('gender');
             $table->date('birth_date');
@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('client_selfie_img')->nullable();
             $table->string('client_rg_img')->nullable();
             $table->string('status')->nullable();
+            $table->string('revocation_reason')->nullable();
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });

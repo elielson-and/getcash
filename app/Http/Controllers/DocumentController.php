@@ -15,9 +15,9 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        $user = User::with('document')->find(Auth::id());
+        $user_documentation = User::with('document')->find(Auth::id());
         // $doc = new Document();
-        return Inertia::render('Client/Documentation');
+        return Inertia::render('Client/Documentation', ['documentation' => $user_documentation->document]);
         // dd($user->document->client_selfie_img);
     }
 
@@ -44,7 +44,7 @@ class DocumentController extends Controller
             $doc->phone = $request->phone;
             $doc->email = $request->email;
             $doc->address = $request->address;
-            $doc->status = 'analysis'; // analysis/approved/null = pending
+            $doc->status = 'analysis'; // analysis/approved/revoked null = pending
             $doc->user_id = Auth::user()->id;
 
             if ($request->hasFile('rg_img')) {

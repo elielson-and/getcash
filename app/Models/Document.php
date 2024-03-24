@@ -18,7 +18,8 @@ class Document extends Model
         'address',
         'client_selfie_img',
         'client_rg_img',
-        'status'
+        'status',
+        'revocation_reason'
     ];
 
     public function user()
