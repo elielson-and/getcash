@@ -167,16 +167,21 @@ const submit = () => {
                                 solicitação de empréstimos.</span>
                         </div> -->
 
-                        <div v-if="fetchedData != ''"
-                            class="w-full text-sm text-gray-500 my-4 border p-4 flex text-center">
-                            As informações foram carregadas previamente, verifique se os dados estão atualizados antes
-                            de enviar para que suas futuras solicitações de serviços sejam aprovadas de forma rápida e
-                            segura.
-                        </div>
+
 
                         <!-- dados -->
                         <div v-if="!formStep" class="w-full"
                             :class="{ 'animate-fade-right animate-duration-[400ms]': formStep === 0 }">
+
+                            <div v-if="fetchedData != ''"
+                                class="w-full text-sm text-gray-500 my-4 border p-4 flex text-center">
+                                As informações foram carregadas previamente, verifique se os dados estão atualizados
+                                antes
+                                de enviar para que suas futuras solicitações de serviços sejam aprovadas de forma rápida
+                                e
+                                segura.
+                            </div>
+
                             <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
                                 <div class="form-control">
                                     <label class="label">
@@ -213,7 +218,7 @@ const submit = () => {
                                     <label class="label">
                                         <span class="label-text">Telefone:</span>
                                     </label>
-                                    <input v-mask="'(##) #####-####'" required type="text" v-model="form.phone"
+                                    <input v-mask="'(##) #####-####'" required type="tel" v-model="form.phone"
                                         placeholder="Digite seu telefone" class="input input-bordered"
                                         :disabled="isLoading" />
                                 </div>
@@ -268,7 +273,7 @@ const submit = () => {
                                         <label class="file-upload-label">
                                             <input type="file" required name="rg">
                                             <img src="@/Images/rg.jpg" class="w-40 mb-3">
-                                            <p>Documento de identificação (FRENTE E COSTA)</p>
+                                            <p>Documento de identificação</p>
                                             <p>Certifique-se de que as informações estarão nítidas na imagem.</p>
                                             <small>JPG, PNG, JPEG</small>
                                         </label>
