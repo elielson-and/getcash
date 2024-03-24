@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Document;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class ClientDocumentationController extends Controller
+class DocumentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,7 +29,19 @@ class ClientDocumentationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // $request->validate()
+        // dd($request);
+        $doc = new Document();
+        $doc->cpf = $request->cpf;
+        $doc->fullName = $request->fullName;
+        $doc->gender = $request->gender;
+        $doc->birth_date = $request->birthDate;
+        $doc->phone = $request->phone;
+        $doc->email = $request->email;
+        $doc->address = $request->address;
+        $doc->save();
+
+        return Inertia::render('Client/Documentation', ['status' => 'sent_success']);
     }
 
     /**

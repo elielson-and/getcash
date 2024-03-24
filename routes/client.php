@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientDocumentationController;
+use App\Http\Controllers\DocumentController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,9 +16,13 @@ Route::middleware('auth', 'verified')->group(function () {
         return Inertia::render('Client/Dashboard');
     });
 
-    Route::get('/documentacao', [ClientDocumentationController::class, 'index'])->name('documentacao');
+    Route::get('/documentacao', [DocumentController::class, 'index'])->name('documentacao');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
+    //Docs
+    Route::post('/documentation/store', [DocumentController::class, 'store'])->name('document.store');
 });
