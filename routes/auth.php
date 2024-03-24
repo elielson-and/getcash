@@ -70,7 +70,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('guest')->group(function () {
     Route::get('/entrar', function () {
         return Inertia::render('Auth/Client/Login');
-    });
+    })->name('entrar');
     Route::get('/cadastro', function () {
         return Inertia::render('Auth/Client/Register');
     });

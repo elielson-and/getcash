@@ -4,11 +4,27 @@ import Sidebar from '@/Components/App/Sidebar.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import axios from 'axios';
 import { ref } from 'vue';
+import { ArrowLongRightIcon, ArrowLeftIcon } from '@heroicons/vue/24/solid';
+import { ArrowUpTrayIcon } from '@heroicons/vue/24/solid';
 import { TheMask } from 'vue-the-mask';
-import { FingerPrintIcon } from '@heroicons/vue/24/solid'
+import { FingerPrintIcon } from '@heroicons/vue/24/solid';
+import { computed } from 'vue';
 
 const isLoading = ref(false);
 const fetchedData = ref('');
+const formStep = ref(null);
+
+// next
+function goToNext() {
+    if (Object.values(form).every(value => value.trim() !== '')) {
+        // todos os campos estão preenchidos
+    }
+}
+
+
+const isFormValid = computed(() =>
+    Object.values(form).every(value => value.trim() !== '')
+);
 
 const form = useForm({
     cpf: '',
@@ -73,8 +89,8 @@ async function fetchCpfData(cpf) {
 // }
 
 const handleCpf = () => {
-    var cpf = form.cpf.replace(/\D/g, '');
-    if (cpf.length == 11) {
+    let cpf = form.cpf.replace(/\D/g, '');
+    if (cpf.length === 11) {
         fetchCpfData(cpf);
     }
 };
@@ -112,7 +128,7 @@ const submit = () => {
 
                     <!-- body -->
                     <div class="w-full p-4">
-                        <div role="alert" class="alert bg-green-200 border-none ">
+                        <!-- <div role="alert" class="alert bg-green-200 border-none ">
                             <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -120,7 +136,7 @@ const submit = () => {
                             </svg>
                             <span>Sua documentação foi entregue e atende todos os requisitos! <br>
                                 <small>Você já pode fazer a solicitação de novos empréstimos.</small></span>
-                        </div>
+                        </div> -->
 
                         <!-- <div role="alert" class="alert bg-red-200 border-none ">
                             <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none"
@@ -157,75 +173,121 @@ const submit = () => {
                             de enviar para que suas futuras solicitações de serviços sejam aprovadas de forma rápida e
                             segura.
                         </div>
+
                         <!-- dados -->
-                        <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text">CPF:</span>
-                                </label>
-                                <input v-mask="'###.###.###-##'" v-on:keyup="handleCpf" type="text"
-                                    placeholder="Digite seu CPF" required v-model="form.cpf"
-                                    class="input input-bordered" />
-                            </div>
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text">Nome Completo:</span>
-                                </label>
-                                <input type="text" placeholder="Digite seu nome completo" v-model="form.fullName"
-                                    class="input input-bordered" required :disabled="isLoading" />
-                            </div>
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text">Sexo:</span>
-                                </label>
-                                <select class="select select-bordered" required :disabled="isLoading">
-                                    <option disabled selected>Selecione</option>
-                                    <option :selected="form.gender == 'M'" value="m">Masculino</option>
-                                    <option :selected="form.gender == 'F'" value="f">Feminino</option>
-                                </select>
-                            </div>
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text">Data de Nascimento:</span>
-                                </label>
-                                <input type="date" required class="input input-bordered" v-model="form.birthDate"
-                                    :disabled="isLoading" />
-                            </div>
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text">Telefone:</span>
-                                </label>
-                                <input v-mask="'(##) #####-####'" required type="tel" placeholder="Digite seu telefone"
-                                    class="input input-bordered" :disabled="isLoading" />
-                            </div>
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text">Email:</span>
-                                </label>
-                                <input type="email" placeholder="Digite seu email" required class="input input-bordered"
-                                    :disabled="isLoading" />
-                            </div>
-                            <div class="form-control col-span-1 md:col-span-2 lg:col-span-3">
-                                <label class="label">
-                                    <span class="label-text">Endereço Completo:</span>
-                                </label>
-                                <input type="text" placeholder="Digite seu endereço completo" required
-                                    class="input input-bordered" v-model="form.address" :disabled="isLoading" />
-                            </div>
+                        <div v-if="!formStep" class="w-full"
+                            :class="{ 'animate-fade-right animate-duration-[400ms]': formStep === 0 }">
+                            <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">CPF:</span>
+                                    </label>
+                                    <input v-mask="'###.###.###-##'" v-on:keyup="handleCpf" type="text"
+                                        placeholder="Digite seu CPF" required v-model="form.cpf"
+                                        class="input input-bordered " />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Nome Completo:</span>
+                                    </label>
+                                    <input type="text" placeholder="Digite seu nome completo" v-model="form.fullName"
+                                        class="input input-bordered" required :disabled="isLoading" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Sexo:</span>
+                                    </label>
+                                    <select class="select select-bordered" required :disabled="isLoading">
+                                        <option disabled selected>Selecione</option>
+                                        <option :selected="form.gender == 'M'" value="m">Masculino</option>
+                                        <option :selected="form.gender == 'F'" value="f">Feminino</option>
+                                    </select>
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Data de Nascimento:</span>
+                                    </label>
+                                    <input type="date" required class="input input-bordered" :disabled="isLoading" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Telefone:</span>
+                                    </label>
+                                    <input v-mask="'(##) #####-####'" required type="text" v-model="form.phone"
+                                        placeholder="Digite seu telefone" class="input input-bordered"
+                                        :disabled="isLoading" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Email:</span>
+                                    </label>
+                                    <input type="email" placeholder="Digite seu email" required v-model="form.email"
+                                        class="input input-bordered" :disabled="isLoading" />
+                                </div>
+                                <div class="form-control col-span-1 md:col-span-2 lg:col-span-3">
+                                    <label class="label">
+                                        <span class="label-text">Endereço Completo:</span>
+                                    </label>
+                                    <input type="text" placeholder="Digite seu endereço completo" required
+                                        class="input input-bordered" v-model="form.address" :disabled="isLoading" />
+                                </div>
 
+                            </div>
+                            <div class="w-full my-5 flex justify-end ">
+                                <button @click="formStep++"
+                                    :disabled="!form.cpf || !form.fullName || !form.gender || !form.birthDate || !form.phone || !form.email || !form.address"
+                                    class="btn btn-info bg-blue-500 text-white border-none ">
+                                    Continuar
+                                    <ArrowLongRightIcon class="w-6" />
+                                </button>
+                            </div>
                         </div>
-                        <div class="w-full my-5 ">
-                            <button class="btn btn-info bg-blue-500 text-white border-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M7.5 7.5h-.75A2.25 2.25 0 0 0 4.5 9.75v7.5a2.25 2.25 0 0 0 2.25 2.25h7.5a2.25 2.25 0 0 0 2.25-2.25v-7.5a2.25 2.25 0 0 0-2.25-2.25h-.75m0-3-3-3m0 0-3 3m3-3v11.25m6-2.25h.75a2.25 2.25 0 0 1 2.25 2.25v7.5a2.25 2.25 0 0 1-2.25 2.25h-7.5a2.25 2.25 0 0 1-2.25-2.25v-.75" />
-                                </svg>
 
-                                Enviar documentação
-                            </button>
+
+
+                        <!-- Imagens -->
+                        <div v-if="formStep === 1" class="w-full animate-fade-left animate-duration-[500ms]">
+                            <h2 class="text-2xl text-gray-400 text-center">Clique ou arraste as imagens para as áreas
+                                abaixo</h2>
+
+
+                            <form action="" class="w-full p-4 my-5">
+                                <div class="w-full flex flex-col md:flex-row justify-center gap-4">
+                                    <div class="file-upload">
+                                        <label class="file-upload-label">
+                                            <input type="file" required name="selfie">
+                                            <!-- <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" ...></svg> -->
+                                            <img src="@/Images/selfie.png" class="w-40">
+                                            <!-- ícone de upload -->
+                                            <p>Anexe uma <b>selfie de seu rosto</b> com uma boa iluminação</p>
+                                            <p>Você pode tirar uma foto agora ou fazer upload da sua galeria.</p>
+                                            <small>JPG, PNG, JPEG</small>
+                                        </label>
+                                    </div>
+                                    <div class="file-upload">
+                                        <label class="file-upload-label">
+                                            <input type="file" required name="rg">
+                                            <img src="@/Images/rg.jpg" class="w-40 mb-3">
+                                            <p>Documento de identificação (FRENTE E COSTA)</p>
+                                            <p>Certifique-se de que as informações estarão nítidas na imagem.</p>
+                                            <small>JPG, PNG, JPEG</small>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="w-full my-5 flex justify-end gap-2 ">
+                                    <button @click="formStep = 0" class="btn  border-none"
+                                        style="text-decoration: none;">
+                                        <ArrowLeftIcon class="w-6" />
+                                        Voltar
+                                    </button>
+                                    <button class="btn btn-info bg-blue-500 text-white border-none">
+                                        Finalizar tudo e enviar
+                                        <ArrowUpTrayIcon class="w-6" />
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-
 
 
                         <div class="w-full border-dashed text-blue-500 bg-blue-50 p-4 mt-16 rounded-lg">
@@ -254,3 +316,36 @@ const submit = () => {
         </div>
     </AuthenticatedLayout>
 </template>
+
+
+<style scoped lang="scss">
+.file-upload {
+    @apply relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500;
+    text-align: center;
+    display: block;
+    padding: 20px;
+    border: 2px dashed gray;
+
+    &:hover {
+        border: 2px solid rgb(2, 52, 218);
+    }
+
+    input[type='file'] {
+        @apply absolute w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md;
+        left: 0;
+        top: 0;
+
+        &:focus {
+            @apply outline-none ring-0;
+        }
+    }
+
+    .file-upload-label {
+        @apply flex flex-col items-center justify-center h-full;
+
+        p {
+            @apply text-sm text-gray-500;
+        }
+    }
+}
+</style>

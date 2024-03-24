@@ -4,6 +4,7 @@ import HeaderBubble from '@/Components/Svg/HeaderBubble.vue';
 import { Vue3Lottie } from 'vue3-lottie';
 
 import HeroCash from '@/Lottie/HeroCash.json';
+import { Link } from '@inertiajs/vue3';
 </script>
 
 <template>
@@ -21,18 +22,17 @@ import HeroCash from '@/Lottie/HeroCash.json';
                         segura!</h2>
                     <p class="my-6 text-2xl text-gray-600">Não realizamos <s>consulta de crédito</s>. <br> Clique no
                         botão abaixo para conferir as ofertas e valores disponíveis agora mesmo.</p>
-                    <button
+                    <Link :href="route('entrar')"
                         class="w-64 bg-blue-500 hover:bg-blue-400 flex flex-row items-center py-4 px-10 text-white text-xl font-bold transition-all rounded-md">
-                        Conferir ofertas
-                        <div class="icon">
-                            <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                <path
-                                    d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
-                                    fill="currentColor"></path>
-                            </svg>
-                        </div>
-                    </button>
+                    Conferir ofertas
+                    <div class="icon">
+                        <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+                                fill="currentColor"></path>
+                        </svg>
+                    </div>
+                    </Link>
 
                 </div>
                 <div class="hidden md:flex md:w-[58%] relative z-0 ">

@@ -32,5 +32,5 @@ export default {
         },
     },
 
-    plugins: [forms, require("daisyui")],
+    plugins: [forms, require("daisyui"), require('tailwindcss-animated')],
 };
