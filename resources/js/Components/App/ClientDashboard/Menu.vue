@@ -1,16 +1,15 @@
 <script setup>
 import { Link, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
-
-// Acessa as informações da página atual
+import { LockClosedIcon, ClockIcon } from '@heroicons/vue/24/outline';
 const { url } = usePage();
 
 </script>
 
 <template>
     <div class="w-full p-4">
-
-        <button class="btn w-full btn-success  text-white font-bold text-lg">
+        <button v-if="$page.props.documentation.status == 'approved'"
+            class="btn w-full btn-success  text-white font-bold text-lg">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -19,6 +18,23 @@ const { url } = usePage();
 
             Solicitar valor
         </button>
+        <div v-else class="tooltip tooltip-bottom w-full"
+            :data-tip="!$page.props.documentation ? 'Documentação pendente!' : 'Documentação em análise'">
+            <button
+                class="btn w-full flex-col gap-0 flex-wrap py-1 bg-gray-400 h-auto hover:bg-gray-400 text-white font-bold ">
+                <div class="flex flex-row items-center gap-2">
+                    <ClockIcon class="w-6"
+                        v-if="$page.props.documentation && $page.props.documentation.status == 'analysis'" />
+                    <LockClosedIcon class="w-6" v-else />
+                    <p class="text-lg">Solicitar valor</p>
+                </div>
+
+                <p class="text-xs" v-if="$page.props.documentation && $page.props.documentation.status == 'analysis'">
+                    (Aguardando
+                    aprovação)</p>
+            </button>
+        </div>
+
         <ul class="menu  menu-md w-full gap-1 rounded-box mt-4">
             <li><a>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
