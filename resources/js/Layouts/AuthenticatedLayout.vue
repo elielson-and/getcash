@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from 'vue';
+import Sidebar from '@/Components/App/Sidebar.vue';
+
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
@@ -122,7 +124,9 @@ const showingNavigationDropdown = ref(false);
             </header>
 
             <!-- Page Content -->
-            <main>
+            <main class="max-w-7xl  flex gap-2 mx-auto sm:px-6 lg:px-8 p-2">
+                <Sidebar class="bg-white w-80 overflow-hidden shadow-sm sm:rounded-lg sticky top-2" />
+
                 <slot />
             </main>
         </div>

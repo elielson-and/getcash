@@ -78,6 +78,14 @@ class DocumentController extends Controller
         //
     }
 
+    public function status()
+    {
+        $user_documentation = User::with('document')->find(Auth::id());
+        // $doc = new Document();
+        return Inertia::render('Client/Documentation', ['documentation' => $user_documentation->document]);
+        // dd($user->document->client_selfie_img);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
