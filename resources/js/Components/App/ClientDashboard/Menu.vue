@@ -8,7 +8,8 @@ const { url } = usePage();
 
 <template>
     <div class="w-full p-4">
-        <button v-if="$page.props.documentation.status == 'approved'"
+
+        <button v-if="$page.props.documentation && $page.props.documentation.status == 'approved'"
             class="btn w-full btn-success  text-white font-bold text-lg">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-6 h-6">
