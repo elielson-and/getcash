@@ -9,6 +9,9 @@ import { TheMask } from 'vue-the-mask';
 import { FingerPrintIcon } from '@heroicons/vue/24/solid';
 import { computed } from 'vue';
 
+const selfiePreview = ref('');
+const rgPreview = ref('');
+
 defineProps({
     documentation: {
         type: Object,
@@ -112,8 +115,19 @@ const submit = () => {
 function handleFileUpload(event, fieldName) {
     const file = event.target.files[0];
     if (file) {
-        // Isso irá atualizar o objeto `form` com o arquivo
+        // Atualiza o objeto form com o arquivo
         form[fieldName] = file;
+
+        // Cria um URL de objeto para pré-visualização
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            if (fieldName === 'selfie_img') {
+                selfiePreview.value = e.target.result;
+            } else if (fieldName === 'rg_img') {
+                rgPreview.value = e.target.result;
+            }
+        };
+        reader.readAsDataURL(file);
     }
 }
 </script>
@@ -125,7 +139,7 @@ function handleFileUpload(event, fieldName) {
 
     <AuthenticatedLayout>
 
-        <div class="bg-white w-full border border-red-500 overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="bg-white w-full overflow-hidden shadow-sm sm:rounded-lg">
 
             <div class="w-full border-b-2 p-4 mb-4">
                 <div class="text-2xl text-gray-900 flex items-center">
@@ -137,7 +151,7 @@ function handleFileUpload(event, fieldName) {
                     Envio de documentação
                 </div>
             </div>
-            <!-- {{ $page.props.auth.user.name }} -->
+            <!-- {{ $page.props.documentation }} -->
 
             <!-- body -->
             <div class="w-full p-4 ">
@@ -177,7 +191,6 @@ function handleFileUpload(event, fieldName) {
                         </span>
                     </div>
                 </div>
-
 
                 <!-- form doc wrapper -->
                 <div v-if="!documentation" class="w-full">
@@ -279,16 +292,23 @@ function handleFileUpload(event, fieldName) {
                                     <div class="file-upload">
                                         <label class="file-upload-label">
                                             <!-- <input type="file" v-model="form.selfie_img"> -->
+                                            <!-- <input type="file" @change="handleFileUpload($event, 'selfie_img')"
+                                                name="selfie_img"> -->
                                             <input type="file" @change="handleFileUpload($event, 'selfie_img')"
                                                 name="selfie_img">
-
+                                            <img :src="selfiePreview" class="w-40" v-if="selfiePreview">
                                             <!-- <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" ...></svg> -->
-                                            <img src="@/Images/selfie.png" class="w-40">
-                                            <!-- ícone de upload -->
-                                            <p>Anexe uma <b>selfie de seu rosto</b> com uma boa iluminação</p>
-                                            <p>Você pode tirar uma foto agora ou fazer upload da sua galeria.
-                                            </p>
-                                            <small>JPG, PNG, JPEG</small>
+
+                                            <div v-else
+                                                class="w-full max-w-64 flex flex-col justify-center items-center">
+                                                <img src="@/Images/selfie.png" class="w-40">
+                                                <!-- ícone de upload -->
+                                                <p>Anexe uma <b>selfie de seu rosto</b> com uma boa iluminação</p>
+                                                <p>Você pode tirar uma foto agora ou fazer upload da sua galeria.
+                                                </p>
+                                                <small>JPG, PNG, JPEG</small>
+                                            </div>
+                                            <h2 class="mt-4" v-if="rgPreview">✔ Selfie</h2>
                                         </label>
                                     </div>
                                     <div class="file-upload">
@@ -296,11 +316,20 @@ function handleFileUpload(event, fieldName) {
                                             <!-- <input type="file" name="rg"> -->
                                             <input type="file" @change="handleFileUpload($event, 'rg_img')"
                                                 name="rg_img">
-                                            <img src="@/Images/rg.jpg" class="w-40 mb-3">
-                                            <p>Documento de identificação</p>
-                                            <p>Certifique-se de que as informações estarão nítidas na imagem.
-                                            </p>
-                                            <small>JPG, PNG, JPEG</small>
+                                            <img :src="rgPreview" class="w-40 mb-3" v-if="rgPreview">
+                                            <div class="w-full max-w-64 flex flex-col justify-center items-center"
+                                                v-else>
+                                                <img src="@/Images/rg.jpg" class="w-40 mb-3">
+                                                <p>Documento de identificação</p>
+                                                <p>Certifique-se de que as informações estarão nítidas na imagem (Frente
+                                                    e
+                                                    Costas do documento).
+                                                </p>
+                                                <small>JPG, PNG, JPEG</small>
+                                            </div>
+
+                                            <h2 v-if="rgPreview">✔ RG</h2>
+
                                         </label>
                                     </div>
                                 </div>
@@ -321,8 +350,7 @@ function handleFileUpload(event, fieldName) {
 
                     </form>
 
-                    <div v-for="index in 20"
-                        class="w-full relative bottom-0 left-0 border-dashed text-blue-500 bg-blue-50 p-4 rounded-lg">
+                    <div class="w-full relative bottom-0 left-0 border-dashed text-blue-500 bg-blue-50 p-4 rounded-lg">
 
                         <span class="flex text-blue-700"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
