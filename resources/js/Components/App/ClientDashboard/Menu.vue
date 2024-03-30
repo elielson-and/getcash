@@ -1,9 +1,15 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
+import { ref } from 'vue';
+
+// Acessa as informações da página atual
+const { url } = usePage();
+
 </script>
 
 <template>
     <div class="w-full p-4">
+
         <button class="btn w-full btn-success  text-white font-bold text-lg">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-6 h-6">
@@ -41,7 +47,7 @@ import { Link } from '@inertiajs/vue3';
                     Minhas solicitações
                 </a></li>
             <li>
-                <Link :href="route('documentacao')">
+                <Link :href="route('documentacao')" :class="{ 'bg-gray-200': url == '/documentacao' }">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
