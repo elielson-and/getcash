@@ -17,6 +17,9 @@ Route::middleware('auth', 'verified')->group(function () {
     });
 
     Route::get('/documentacao', [DocumentController::class, 'index'])->name('documentacao');
+    Route::get('/transacoes', function () {
+        return Inertia::render('Client/Transactions');
+    })->name('transacoes');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

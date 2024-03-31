@@ -1,7 +1,7 @@
 <script setup>
 import { Link, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import { LockClosedIcon, ClockIcon } from '@heroicons/vue/24/outline';
+import { LockClosedIcon, ClockIcon, ArrowsRightLeftIcon } from '@heroicons/vue/24/outline';
 const { url } = usePage();
 
 </script>
@@ -54,15 +54,14 @@ const { url } = usePage();
 
                     Meu perfil
                 </a></li>
-            <li><a>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                    </svg>
+            <li>
+                <Link :href="route('transacoes')" :class="{ 'bg-gray-200': url == '/transacoes' }">
+                <ArrowsRightLeftIcon class="w-6" />
 
-                    Minhas solicitações
-                </a></li>
+                Minhas transações
+                </Link>
+
+            </li>
             <li>
                 <Link :href="route('documentacao')" :class="{ 'bg-gray-200': url == '/documentacao' }">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
