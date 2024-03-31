@@ -69,7 +69,7 @@ const closeModal = () => {
                 </div>
 
                 <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+                    <SecondaryButton @click="closeModal"> Cancelar </SecondaryButton>
 
                     <DangerButton class="ms-3" :class="{ 'opacity-25': form.processing }" :disabled="form.processing"
                         @click="deleteUser">
