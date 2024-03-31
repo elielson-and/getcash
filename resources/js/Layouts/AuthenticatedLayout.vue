@@ -16,10 +16,10 @@ const showingNavigationDropdown = ref(false);
 
 <template>
     <div>
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gray-200">
 
             <!-- <Navbar  /> -->
-            <nav class="bg-white border-b border-gray-100 relative z-50">
+            <nav class="bg-white border-b border-gray-100 z-50 sticky top-0  ">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
@@ -83,8 +83,9 @@ const showingNavigationDropdown = ref(false);
             </header>
 
             <!-- Page Content -->
-            <main class="max-w-7xl  flex gap-2 mx-auto sm:px-6 lg:px-8 p-2">
-                <Sidebar class="hidden md:block bg-white w-80 overflow-hidden shadow-sm sm:rounded-lg sticky top-2" />
+            <main class="max-w-7xl min-h-[calc(100vh-10vh)] flex gap-2 mx-auto sm:px-6 lg:px-8 p-2">
+                <Sidebar
+                    class="hidden md:block bg-white w-80 overflow-hidden shadow-sm sm:rounded-lg sticky top-[7.5vh]" />
 
                 <slot />
             </main>
