@@ -120,7 +120,7 @@ const showingNavigationDropdown = ref(false);
 
             <!-- Page Content -->
             <main class="max-w-7xl  flex gap-2 mx-auto sm:px-6 lg:px-8 p-2">
-                <Sidebar class="bg-white w-80 overflow-hidden shadow-sm sm:rounded-lg sticky top-2" />
+                <Sidebar class="hidden md:block bg-white w-80 overflow-hidden shadow-sm sm:rounded-lg sticky top-2" />
 
                 <slot />
             </main>
