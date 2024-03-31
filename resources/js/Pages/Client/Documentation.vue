@@ -179,8 +179,9 @@ function handleFileUpload(event, fieldName) {
             <!-- body -->
             <div class="w-full relative  p-4 ">
                 <!-- wrapper alerts -->
-                <div v-if="documentation" class="w-full">
-                    <div v-if="documentation.status == 'approved'" role="alert" class="alert bg-green-200 border-none">
+                <div v-if="documentation" class="w-full ">
+                    <div v-if="documentation.status == 'approved'" role="alert"
+                        class="alert bg-green-200 border-none  ">
                         <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -195,7 +196,8 @@ function handleFileUpload(event, fieldName) {
                                     class="text-blue-600 hover:underline">Clicando aqui</a></small></span>
 
                     </div>
-                    <div v-if="documentation.status == 'analysis'" role="alert" class="alert bg-gray-100 border-none">
+                    <div v-if="documentation.status == 'analysis'" role="alert"
+                        class="alert bg-gray-100 border-none z-10">
                         <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

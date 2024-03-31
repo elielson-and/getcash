@@ -7,7 +7,7 @@ const { url } = usePage();
 </script>
 
 <template>
-    <div class="w-full p-4">
+    <div class="w-1/2 md:w-full p-4 relative z-50" style="z-index: 10 !important;">
 
         <button v-if="$page.props.documentation && $page.props.documentation.status == 'approved'"
             class="btn w-full btn-success  text-white font-bold text-lg">
