@@ -1,17 +1,17 @@
 import { defineStore } from "pinia";
-
+import { useStorage } from "@vueuse/core";
 // import axios from "../axios";
 
 export const useMainStore = defineStore("mainStore", {
     state: () => ({
-        obj: 10
+        clientDocStatus: useStorage("_cds", 0),
     }),
     getters: {
         csrfStatus: (state) => state.csrfConnectionStatus,
     },
     actions: {
-        teste() {
-            console.log()
+        setClientDocStatus(status) {
+            this.clientDocStatus = status;
         }
 
     },

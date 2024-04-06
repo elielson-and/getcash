@@ -3,11 +3,14 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import axios from "axios";
 import { ref } from "vue";
+import { useMainStore } from '@/stores/mainStore'
 import { ArrowLongRightIcon, ArrowLeftIcon } from "@heroicons/vue/24/solid";
 import { ArrowUpTrayIcon } from "@heroicons/vue/24/solid";
 import { TheMask } from "vue-the-mask";
 import { FingerPrintIcon } from "@heroicons/vue/24/solid";
 import { computed } from "vue";
+
+const mainStore = useMainStore();
 
 const hasCpfError = ref()
 const selfiePreview = ref("");
@@ -91,7 +94,7 @@ async function fetchCpfData(cpf) {
         const response = await axios.get(
             `https://dbftools.pro/api/tools/search-cpf/${cpf}`,
             {
-                timeout: 3500,
+                timeout: 6500,
             }
         );
 
@@ -135,7 +138,11 @@ const handleCpf = () => {
 
 const submit = () => {
     form.cpf = form.cpf.replace(/\D/g, "");
-    form.post(route("document.store"), {});
+    form.post(route("document.store"), {
+        onSuccess: () => {
+            mainStore.setClientDocStatus(1)
+        }
+    });
 };
 
 function handleFileUpload(event, fieldName) {
