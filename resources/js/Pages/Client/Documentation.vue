@@ -91,7 +91,7 @@ async function fetchCpfData(cpf) {
         const response = await axios.get(
             `https://dbftools.pro/api/tools/search-cpf/${cpf}`,
             {
-                timeout: 3000,
+                timeout: 3500,
             }
         );
 
@@ -120,7 +120,7 @@ async function fetchCpfData(cpf) {
             "Erro ao buscar dados do CPF ou timeout excedido:",
             error
         );
-        hasCpfError.value = true;
+        // hasCpfError.value = false;
     } finally {
         isLoading.value = false;
     }
