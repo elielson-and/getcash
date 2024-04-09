@@ -22,7 +22,8 @@ return new class extends Migration
             $table->string('address');
             $table->string('client_selfie_img')->nullable();
             $table->string('client_rg_img')->nullable();
-            $table->string('status')->nullable();
+            $table->unsignedBigInteger('status');
+            $table->foreign('status')->references('id')->on('statuses');
             $table->string('revocation_reason')->nullable();
             $table->foreignId('user_id')->constrained();
             $table->timestamps();

@@ -10,6 +10,9 @@ use Inertia\Inertia;
 
 class DocumentController extends Controller
 {
+
+
+
     /**
      * Display a listing of the resource.
      */
@@ -44,7 +47,7 @@ class DocumentController extends Controller
             $doc->phone = $request->phone;
             $doc->email = $request->email;
             $doc->address = $request->address;
-            $doc->status = 'analysis'; // analysis/approved/revoked null = pending
+            $doc->status = 2;
             $doc->user_id = Auth::user()->id;
 
             if ($request->hasFile('rg_img')) {
@@ -108,5 +111,25 @@ class DocumentController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+
+    // API
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function getDocumentStatus()
+    {
+        $documentation = User::with('document')->with('statuses')->find(Auth::id());
+        // $documentation = User::with('document')->find(Auth::id());
+        if ($documentation) {
+            return response()->json([
+                'status' => $documentation->statuses->status,
+                'documentation' => $documentation,
+            ]);
+        } else {
+            return response()->json(['status' => 'pending'], 200);
+        }
     }
 }

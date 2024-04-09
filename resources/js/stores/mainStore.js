@@ -10,6 +10,16 @@ export const useMainStore = defineStore("mainStore", {
         csrfStatus: (state) => state.csrfConnectionStatus,
     },
     actions: {
+        async getClientDocStatus(status) {
+            try {
+                const response = await axios.get('/api/get-document-status');
+                this.clientDocStatus = response.data;
+                console.log(response.data);
+            } catch (error) {
+                console.error('Erro ao buscar dados:', error);
+            }
+
+        },
         setClientDocStatus(status) {
             this.clientDocStatus = status;
         }

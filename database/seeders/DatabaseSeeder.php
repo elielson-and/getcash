@@ -24,5 +24,16 @@ class DatabaseSeeder extends Seeder
             'name' => 'Client User',
             'email' => 'client@example.com',
         ]);
+
+
+        \App\Models\Status::factory()->create([
+            'status' => 'Pendente',
+        ]);
+        \App\Models\Status::factory()->create([
+            'status' => 'Em análise',
+        ]);
+        \App\Models\Status::factory()->create([
+            'status' => 'Aprovado',
+        ]);
     }
 }
