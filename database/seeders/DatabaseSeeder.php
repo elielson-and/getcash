@@ -27,13 +27,16 @@ class DatabaseSeeder extends Seeder
 
 
         \App\Models\Status::factory()->create([
-            'status' => 'Pendente',
+            'name' => 'Pendente',
         ]);
         \App\Models\Status::factory()->create([
-            'status' => 'Em análise',
+            'name' => 'Em análise',
         ]);
         \App\Models\Status::factory()->create([
-            'status' => 'Aprovado',
+            'name' => 'Aprovado',
+        ]);
+        \App\Models\Status::factory()->create([
+            'name' => 'Revogado',
         ]);
     }
 }

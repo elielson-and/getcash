@@ -6,11 +6,13 @@ import { ref } from "vue";
 import { useMainStore } from '@/stores/mainStore'
 import { ArrowLongRightIcon, ArrowLeftIcon } from "@heroicons/vue/24/solid";
 import { ArrowUpTrayIcon } from "@heroicons/vue/24/solid";
+import { router } from '@inertiajs/vue3'
 import { TheMask } from "vue-the-mask";
 import { FingerPrintIcon } from "@heroicons/vue/24/solid";
 import { computed } from "vue";
 
 const mainStore = useMainStore();
+mainStore.getClientDocStatus();
 
 const hasCpfError = ref()
 const selfiePreview = ref("");
@@ -25,17 +27,6 @@ defineProps({
 const isLoading = ref(false);
 const fetchedData = ref("");
 const formStep = ref(null);
-
-// next
-// function goToNext() {
-//     if (Object.values(form).every(value => value.trim() !== '')) {
-//         // todos os campos estão preenchidos
-//     }
-// }
-
-// const isFormValid = computed(() =>
-//     Object.values(form).every(value => value.trim() !== '')
-// );
 
 const form = useForm({
     cpf: "",
@@ -140,7 +131,8 @@ const submit = () => {
     form.cpf = form.cpf.replace(/\D/g, "");
     form.post(route("document.store"), {
         onSuccess: () => {
-            mainStore.setClientDocStatus(1)
+            mainStore.setClientDocStatus(1);
+            router.visit('/documentacao')
         }
     });
 };
@@ -186,8 +178,8 @@ function handleFileUpload(event, fieldName) {
             <!-- body -->
             <div class="w-full relative  p-4 ">
                 <!-- wrapper alerts -->
-                <div v-if="documentation" class="w-full ">
-                    <div v-if="documentation.status == 3" role="alert" class="alert bg-green-200 border-none  ">
+                <div v-if="mainStore.clientDocumentation.document" class="w-full ">
+                    <div v-if="mainStore.isDocumentStatus(3)" role="alert" class="alert bg-green-200 border-none  ">
                         <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -202,7 +194,7 @@ function handleFileUpload(event, fieldName) {
                                     class="text-blue-600 hover:underline">Clicando aqui</a></small></span>
 
                     </div>
-                    <div v-if="documentation.status == 2" role="alert" class="alert bg-gray-100 border-none z-10">
+                    <div v-if="mainStore.isDocumentStatus(2)" role="alert" class="alert bg-gray-100 border-none z-10">
                         <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -215,7 +207,7 @@ function handleFileUpload(event, fieldName) {
                                 realizar novas solicitações.</small></span>
                     </div>
 
-                    <div v-if="documentation.status == 1" role="alert" class="alert bg-red-100 border-none">
+                    <div v-if="mainStore.isDocumentStatus(4)" role="alert" class="alert bg-red-100 border-none">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -224,7 +216,7 @@ function handleFileUpload(event, fieldName) {
                         <span><b>Sua documentação foi revogada.</b> <br />
 
                             <small><b>Motivo: </b>
-                                {{ documentation.revocation_reason }}
+                                {{ mainStore.clientDocumentation.document.revocation_reason }}
                             </small>
                         </span>
                     </div>

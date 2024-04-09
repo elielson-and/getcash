@@ -32,4 +32,6 @@ Route::middleware('auth', 'verified')->group(function () {
 
     //Docs
     Route::post('/documentation/store', [DocumentController::class, 'store'])->name('document.store');
+
+    Route::get('/get-document-status', [DocumentController::class, 'status'])->name('doc-status');
 });

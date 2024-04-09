@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Status extends Model
 {
     use HasFactory;
-    public function status()
+
+
+    public function documents()
     {
-        return $this->belongsTo(Status::class, 'status');
+        return $this->belongsTo(Document::class);
     }
 }

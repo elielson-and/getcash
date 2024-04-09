@@ -47,7 +47,7 @@ class DocumentController extends Controller
             $doc->phone = $request->phone;
             $doc->email = $request->email;
             $doc->address = $request->address;
-            $doc->status = 2;
+            $doc->status_id = 2;
             $doc->user_id = Auth::user()->id;
 
             if ($request->hasFile('rg_img')) {
@@ -83,10 +83,30 @@ class DocumentController extends Controller
 
     public function status()
     {
-        $user_documentation = User::with('document')->find(Auth::id());
-        // $doc = new Document();
-        return Inertia::render('Client/Documentation', ['documentation' => $user_documentation->document]);
-        // dd($user->document->client_selfie_img);
+
+        $user_id = Auth::id();
+        // $data = User::where('id', $user_id)->first();
+        // return $data;
+
+        $document = User::find($user_id)->document()->with('status')->first();
+
+        if ($document) {
+            return response()->json([
+                'document' => $document
+            ]);
+        } else {
+            return response()->json(['error' => 'Documento não encontrado.'], 404);
+        }
+
+        // Trazendo documento com dados de usuario
+        // $user = User::with('document.status')->find($user_id);
+        // if ($user && $user->document) {
+        //     return response()->json([
+        //         'user' => $user
+        //     ]);
+        // } else {
+        //     return response()->json(['error' => 'Usuário ou documento não encontrado.'], 404);
+        // }
     }
 
     /**
@@ -121,15 +141,15 @@ class DocumentController extends Controller
      */
     public function getDocumentStatus()
     {
-        $documentation = User::with('document')->with('statuses')->find(Auth::id());
-        // $documentation = User::with('document')->find(Auth::id());
-        if ($documentation) {
-            return response()->json([
-                'status' => $documentation->statuses->status,
-                'documentation' => $documentation,
-            ]);
-        } else {
-            return response()->json(['status' => 'pending'], 200);
-        }
+        // $documentation = User::with('document')->with('statuses')->find(Auth::id());
+        // // $documentation = User::with('document')->find(Auth::id());
+        // if ($documentation) {
+        //     return response()->json([
+        //         'status' => $documentation->statuses->status,
+        //         'documentation' => $documentation,
+        //     ]);
+        // } else {
+        //     return response()->json(['status' => 'pending'], 200);
+        // }
     }
 }

@@ -26,8 +26,10 @@ class Document extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function documents()
+
+
+    public function status()
     {
-        return $this->hasMany(Document::class, 'status');
+        return $this->belongsTo(Status::class);
     }
 }

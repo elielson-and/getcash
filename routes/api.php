@@ -15,7 +15,7 @@ use App\Http\Controllers\DocumentController;
 |
 */
 
-Route::get('/get-document-status', [DocumentController::class, 'getDocumentStatus']);
+// Route::get('/get-document-status', [DocumentController::class, 'status'])->name('doc-status');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
