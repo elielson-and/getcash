@@ -12,6 +12,10 @@ use Inertia\Inertia;
 // Rotas de cliente
 Route::middleware('auth', 'verified')->group(function () {
 
+    Route::get('/inicio', function () {
+        return Inertia::render('Client/Home');
+    })->name('inicio');
+
     Route::get('/painel-do-cliente', function () {
         return Inertia::render('Client/Dashboard');
     });
