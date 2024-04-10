@@ -2,6 +2,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import Backgroundheader from "../../Components/Svg/Backgroundheader.vue";
+import HomeCard from '../../Components/App/ClientDashboard/HomeCard.vue';
 import { ref } from "vue";
 
 </script>
@@ -32,7 +33,8 @@ import { ref } from "vue";
                                 </div>
                             </div>
                             <div class="flex flex-col gap-0">
-                                <h2> {{ $page.props.auth.user.name }}</h2>
+                                <!-- {{ $page.props.auth.user.name }} -->
+                                <h2> Boa tarde, Mariana!</h2>
                                 <small>{{ $page.props.auth.user.email }}</small>
                             </div>
                         </div>
@@ -45,6 +47,11 @@ import { ref } from "vue";
 
                 </div>
 
+                <div class="w-full absolute -bottom-20 z-20 flex flex-row justify-between gap-4 p-4 ">
+                    <HomeCard class="relative" CardName="balance" />
+                    <HomeCard class="relative" CardName="score" />
+                    <HomeCard class="relative" CardName="other" />
+                </div>
             </div>
 
         </div>
