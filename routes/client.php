@@ -29,6 +29,11 @@ Route::middleware('auth', 'verified')->group(function () {
         return Inertia::render('Client/Support');
     })->name('suporte');
 
+    Route::get('/termos-de-uso', function () {
+        return Inertia::render('Client/Terms');
+    })->name('termos');
+
+
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
