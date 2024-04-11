@@ -48,4 +48,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Document::class);
     }
+
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class);
+    }
 }
