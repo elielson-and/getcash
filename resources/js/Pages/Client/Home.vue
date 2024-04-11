@@ -29,11 +29,22 @@ async function getWallet() {
         });
 }
 
-
 onMounted(() => {
     getWallet();
 });
 
+
+function greeting() {
+    var hour = new Date().getHours();
+    console.log(hour)
+    if (hour >= 5 && hour < 12) {
+        return "Bom dia, ";
+    } else if (hour >= 12 && hour < 18) {
+        return "Boa tarde, ";
+    } else {
+        return "Boa noite, ";
+    }
+}
 
 </script>
 
@@ -64,7 +75,7 @@ onMounted(() => {
                             </div>
                             <div class="flex flex-col gap-0">
                                 <!-- {{ $page.props.auth.user.name }} -->
-                                <h2> Boa tarde, Elielson!</h2>
+                                <h2> {{ greeting() }} Elielson!</h2>
                                 <small>{{ $page.props.auth.user.email }}</small>
 
                             </div>
