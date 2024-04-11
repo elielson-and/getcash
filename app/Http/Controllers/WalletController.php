@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WalletController extends Controller
 {
@@ -36,7 +38,7 @@ class WalletController extends Controller
      */
     public function show(Wallet $wallet)
     {
-        //
+        $wallet =  User::with('wallet')->find(Auth::id());
     }
 
     /**

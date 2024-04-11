@@ -1,42 +1,52 @@
 <?php
 
-namespace Database\Seeders;
-
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
+use App\Models\Status;
+use App\Models\Wallet;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        // Criação de usuários específicos
+        $this->createUsers();
 
-        \App\Models\User::factory()->create([
+        // Criação de status
+        $this->createStatuses(['Pendente', 'Em análise', 'Aprovado', 'Revogado']);
+    }
+
+    /**
+     * Cria usuários específicos.
+     */
+    private function createUsers(): void
+    {
+        User::factory()->create([
             'name' => 'Admin User',
             'email' => 'admin@example.com',
-            'admin' => 1
+            'admin' => true,
         ]);
 
-        \App\Models\User::factory()->create([
+        $userClient = User::factory()->create([
             'name' => 'Client User',
             'email' => 'client@example.com',
         ]);
 
+        // Associa uma wallet ao usuário padrão
+        Wallet::factory()->create([
+            'user_id' => $userClient->id,
+        ]);
+    }
 
-        \App\Models\Status::factory()->create([
-            'name' => 'Pendente',
-        ]);
-        \App\Models\Status::factory()->create([
-            'name' => 'Em análise',
-        ]);
-        \App\Models\Status::factory()->create([
-            'name' => 'Aprovado',
-        ]);
-        \App\Models\Status::factory()->create([
-            'name' => 'Revogado',
-        ]);
+    /**
+     * Cria uma lista de status.
+     *
+     * @param array $statuses Nomes dos status a serem criados.
+     */
+    private function createStatuses(array $statuses): void
+    {
+        foreach ($statuses as $status) {
+            Status::factory()->create(['name' => $status]);
+        }
     }
 }
