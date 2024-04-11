@@ -3,7 +3,10 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import Backgroundheader from "../../Components/Svg/Backgroundheader.vue";
 import HomeCard from '../../Components/App/ClientDashboard/HomeCard.vue';
+import { Cog6ToothIcon, ShareIcon } from '@heroicons/vue/24/outline';
 import { ref } from "vue";
+
+
 
 </script>
 
@@ -34,14 +37,14 @@ import { ref } from "vue";
                             </div>
                             <div class="flex flex-col gap-0">
                                 <!-- {{ $page.props.auth.user.name }} -->
-                                <h2> Boa tarde, Mariana!</h2>
+                                <h2> Boa tarde, Elielson!</h2>
                                 <small>{{ $page.props.auth.user.email }}</small>
                             </div>
                         </div>
 
-                        <div class="flex flex-col items-end">
-                            <p>Saldo:</p>
-                            <h2 class="text-xl font-bold">R$:10,00</h2>
+                        <div class="flex flex-row gap-4">
+                            <ShareIcon class="w-7" />
+                            <Cog6ToothIcon class="w-7" />
                         </div>
                     </nav>
 

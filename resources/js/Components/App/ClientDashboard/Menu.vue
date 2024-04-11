@@ -39,7 +39,7 @@ const mainStore = useMainStore();
         <ul class="menu  menu-md w-full gap-1 rounded-box mt-4">
             <li>
 
-                <Link :href="route('inicio')" :class="{ 'bg-gray-200': url == '/inicio' }">
+                <Link :href="route('painel-cliente')" :class="{ 'bg-gray-200': url == '/painel-do-cliente' }">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
