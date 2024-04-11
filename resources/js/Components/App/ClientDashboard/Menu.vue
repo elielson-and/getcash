@@ -6,12 +6,12 @@ import { useMainStore } from '@/stores/mainStore'
 
 const { url } = usePage();
 const mainStore = useMainStore();
+mainStore.getClientDocStatus();
 </script>
 
 <template>
     <div class="w-1/2 md:w-full p-4 relative z-50" style="z-index: 10 !important;">
-
-        <button v-if="mainStore.clientDocStatus === 3" class="btn w-full btn-success  text-white font-bold text-lg">
+        <button v-if="mainStore.documentationStatus === 3" class="btn w-full btn-success  text-white font-bold text-lg">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -24,13 +24,12 @@ const mainStore = useMainStore();
             <button
                 class="btn w-full flex-col gap-0 flex-wrap py-1 bg-gray-400 h-auto hover:bg-gray-400 text-white font-bold ">
                 <div class="flex flex-row items-center gap-2">
-                    <ClockIcon class="w-6"
-                        v-if="$page.props.documentation && $page.props.documentation.status == 'analysis'" />
+                    <ClockIcon class="w-6" v-if="mainStore.documentationStatus == 2" />
                     <LockClosedIcon class="w-6" v-else />
                     <p class="text-lg">Solicitar valor</p>
                 </div>
 
-                <p class="text-xs" v-if="mainStore.clientDocStatus === 1">
+                <p class="text-xs" v-if="mainStore.documentationStatus == 2">
                     (Aguardando
                     aprovação)</p>
             </button>

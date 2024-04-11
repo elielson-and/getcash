@@ -216,7 +216,7 @@ function handleFileUpload(event, fieldName) {
                         <span><b>Sua documentação foi revogada.</b> <br />
 
                             <small><b>Motivo: </b>
-                                {{ mainStore.clientDocumentation.document.revocation_reason }}
+                                {{ mainStore.documentation.revocation_reason }}
                             </small>
                         </span>
                     </div>

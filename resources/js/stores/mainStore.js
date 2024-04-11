@@ -9,6 +9,7 @@ export const useMainStore = defineStore("mainStore", {
     }),
     getters: {
         documentation: (state) => state.clientDocumentation,
+        documentationStatus: (state) => state.clientDocumentation.status_id,
     },
     actions: {
         async getClientDocStatus() {
