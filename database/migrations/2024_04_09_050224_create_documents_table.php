@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('revocation_reason')->nullable();
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
-            $table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
+            $table->foreign('status_id')->references('id')->on('statuses');
         });
     }
 

@@ -53,4 +53,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Wallet::class);
     }
+
+    public function request()
+    {
+        return $this->hasMany(Request::class);
+    }
 }
