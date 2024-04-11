@@ -3,10 +3,32 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import Backgroundheader from "../../Components/Svg/Backgroundheader.vue";
 import HomeCard from '../../Components/App/ClientDashboard/HomeCard.vue';
-import { Cog6ToothIcon, ShareIcon } from '@heroicons/vue/24/outline';
+import { ArrowPathRoundedSquareIcon, ShareIcon } from '@heroicons/vue/24/outline';
 import { ref } from "vue";
+import axios from 'axios';
+import { onMounted } from "vue";
 
 
+const wallet = ref([]);
+const isLoading = ref(false);
+
+async function getWallet() {
+    isLoading.value = true
+
+    await axios.get('/get-wallet')
+        .then((response) => {
+            setTimeout(() => {
+
+                wallet.value = response.data;
+                isLoading.value = false
+            }, 1000);
+        });
+}
+
+onMounted(() => {
+    getWallet();
+    // setInterval(getWallet, 3000);
+});
 
 </script>
 
@@ -43,18 +65,24 @@ import { ref } from "vue";
                         </div>
 
                         <div class="flex flex-row gap-4">
-                            <ShareIcon class="w-7" />
-                            <Cog6ToothIcon class="w-7" />
+                            <!-- <ShareIcon class="w-7" /> -->
+                            <div class="tooltip tooltip-bottom" data-tip="Atualizar">
+                                <button @click="getWallet()" class="p-4">
+                                    <ArrowPathRoundedSquareIcon class="w-8" />
+                                </button>
+                            </div>
                         </div>
                     </nav>
 
                 </div>
 
                 <div class="w-full absolute -bottom-20 z-20 flex flex-row justify-between gap-4 p-4 ">
-                    <HomeCard class="relative" CardName="balance" />
-                    <HomeCard class="relative" CardName="score" />
-                    <HomeCard class="relative" CardName="other" />
+                    <HomeCard class="relative" CardName="balance" :Balance="wallet.balance" :IsLoading="isLoading" />
+                    <HomeCard class="relative" CardName="score" :Score="wallet.score" :IsLoading="isLoading" />
+                    <HomeCard class="relative" CardName="other" :IsLoading="isLoading" />
                 </div>
+
+
             </div>
 
         </div>

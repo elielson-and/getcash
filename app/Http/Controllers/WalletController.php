@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class WalletController extends Controller
 {
@@ -36,9 +37,10 @@ class WalletController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Wallet $wallet)
+    public function show()
     {
-        $wallet =  User::with('wallet')->find(Auth::id());
+        $wallet =  User::find(Auth::id())->wallet()->first();
+        return response()->json($wallet, 200);
     }
 
     /**

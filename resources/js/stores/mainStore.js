@@ -15,7 +15,7 @@ export const useMainStore = defineStore("mainStore", {
             try {
                 const response = await axios.get('/get-document-status');
                 this.clientDocumentation = response.data;
-                console.log(response);
+                // console.log(response);
 
             } catch (error) {
                 console.error('Erro ao buscar dados:', error);

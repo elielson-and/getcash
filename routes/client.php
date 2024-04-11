@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientDocumentationController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\WalletController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -43,4 +44,9 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::post('/documentation/store', [DocumentController::class, 'store'])->name('document.store');
 
     Route::get('/get-document-status', [DocumentController::class, 'status'])->name('doc-status');
+
+    // Wallet
+
+    // Get wallet data
+    Route::get('/get-wallet', [WalletController::class, 'show']);
 });
