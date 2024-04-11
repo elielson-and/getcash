@@ -6,11 +6,14 @@ import HomeCard from '../../Components/App/ClientDashboard/HomeCard.vue';
 import { ArrowPathRoundedSquareIcon, ShareIcon } from '@heroicons/vue/24/outline';
 import { ref } from "vue";
 import axios from 'axios';
+import { useMainStore } from '@/stores/mainStore'
 import { onMounted } from "vue";
 
-
+const mainStore = useMainStore();
 const wallet = ref([]);
 const isLoading = ref(false);
+
+mainStore.getClientDocStatus();
 
 async function getWallet() {
     isLoading.value = true
@@ -20,15 +23,17 @@ async function getWallet() {
             setTimeout(() => {
 
                 wallet.value = response.data;
-                isLoading.value = false
+                mainStore.getClientDocStatus();
+                isLoading.value = false;
             }, 1000);
         });
 }
 
+
 onMounted(() => {
     getWallet();
-    // setInterval(getWallet, 3000);
 });
+
 
 </script>
 
@@ -61,6 +66,7 @@ onMounted(() => {
                                 <!-- {{ $page.props.auth.user.name }} -->
                                 <h2> Boa tarde, Elielson!</h2>
                                 <small>{{ $page.props.auth.user.email }}</small>
+
                             </div>
                         </div>
 
@@ -79,8 +85,11 @@ onMounted(() => {
                 <div class="w-full absolute -bottom-20 z-20 flex flex-row justify-between gap-4 p-4 ">
                     <HomeCard class="relative" CardName="balance" :Balance="wallet.balance" :IsLoading="isLoading" />
                     <HomeCard class="relative" CardName="score" :Score="wallet.score" :IsLoading="isLoading" />
-                    <HomeCard class="relative" CardName="other" :IsLoading="isLoading" />
+                    <HomeCard class="relative" CardName="other" :IsLoading="isLoading"
+                        :Documentation="mainStore.documentation" />
                 </div>
+
+
 
 
             </div>

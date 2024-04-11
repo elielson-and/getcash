@@ -91,9 +91,7 @@ class DocumentController extends Controller
         $document = User::find($user_id)->document()->with('status')->first();
 
         if ($document) {
-            return response()->json([
-                'document' => $document
-            ]);
+            return response()->json($document, 200);
         } else {
             return response()->json(['error' => 'Documento não encontrado.'], 404);
         }
