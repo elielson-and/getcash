@@ -178,7 +178,7 @@ function handleFileUpload(event, fieldName) {
             <!-- body -->
             <div class="w-full relative  p-4 ">
                 <!-- wrapper alerts -->
-                <div v-if="mainStore.clientDocumentation.document" class="w-full ">
+                <div v-if="mainStore.clientDocumentation" class="w-full ">
                     <div v-if="mainStore.isDocumentStatus(3)" role="alert" class="alert bg-green-200 border-none  ">
                         <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none"
                             viewBox="0 0 24 24">
@@ -223,7 +223,7 @@ function handleFileUpload(event, fieldName) {
                 </div>
 
                 <!-- form doc wrapper -->
-                <div v-if="!documentation" class="w-full">
+                <div v-if="!documentation || mainStore.isDocumentStatus(1)" class="w-full">
 
                     <div v-if="isLoading" class="progress-container">
                         <div class="progress-bar">
@@ -234,9 +234,9 @@ function handleFileUpload(event, fieldName) {
                     <form @submit.prevent="submit" enctype="multipart/form-data">
                         <!-- dados -->
                         <div v-if="!formStep" class="w-full" :class="{
-                    'animate-fade-right animate-duration-[400ms]':
-                        formStep === 0,
-                }">
+                            'animate-fade-right animate-duration-[400ms]':
+                                formStep === 0,
+                        }">
                             <div v-if="fetchedData != ''"
                                 class="w-full text-sm text-gray-500 my-4 border p-4 flex text-center">
                                 As informações foram carregadas previamente,
@@ -252,10 +252,11 @@ function handleFileUpload(event, fieldName) {
                                         <span class="label-text">CPF:</span>
                                     </label>
                                     <input :class="{
-                    'border-2 border-red-500 animate-shake animate-twice animate-duration-200': hasCpfError,
-                    'border-2 border-green-500': hasCpfError === false
-                }" v-mask="'###.###.###-##'" v-on:keyup="handleCpf" type="text" placeholder="Digite seu CPF" required
-                                        v-model="form.cpf" class="input input-bordered" :disabled="isLoading" />
+                                        'border-2 border-red-500 animate-shake animate-twice animate-duration-200': hasCpfError,
+                                        'border-2 border-green-500': hasCpfError === false
+                                    }" v-mask="'###.###.###-##'" v-on:keyup="handleCpf" type="text"
+                                        placeholder="Digite seu CPF" required v-model="form.cpf"
+                                        class="input input-bordered" :disabled="isLoading" />
                                     <small v-if="hasCpfError" class="text-red-500">Informe um CPF válido</small>
                                     <small v-if="hasCpfError === false" class="text-green-600">Cadastro pré
                                         aprovado!</small>
@@ -315,13 +316,13 @@ function handleFileUpload(event, fieldName) {
                             </div>
                             <div class="w-full my-5 flex justify-end">
                                 <button @click="formStep++" :disabled="!form.cpf ||
-                    !form.fullName ||
-                    !form.gender ||
-                    !form.birthDate ||
-                    !form.phone ||
-                    !form.email ||
-                    !form.address
-                    " class="btn btn-info bg-blue-500 text-white border-none">
+                                    !form.fullName ||
+                                    !form.gender ||
+                                    !form.birthDate ||
+                                    !form.phone ||
+                                    !form.email ||
+                                    !form.address
+                                    " class="btn btn-info bg-blue-500 text-white border-none">
                                     Continuar
                                     <ArrowLongRightIcon class="w-6" />
                                 </button>
@@ -343,11 +344,11 @@ function handleFileUpload(event, fieldName) {
                                             <!-- <input type="file" @change="handleFileUpload($event, 'selfie_img')"
                                                 name="selfie_img"> -->
                                             <input type="file" @change="
-                    handleFileUpload(
-                        $event,
-                        'selfie_img'
-                    )
-                    " name="selfie_img" required />
+                                                handleFileUpload(
+                                                    $event,
+                                                    'selfie_img'
+                                                )
+                                                " name="selfie_img" required />
                                             <img :src="selfiePreview" class="w-40" v-if="selfiePreview" />
                                             <!-- <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" ...></svg> -->
 
@@ -376,11 +377,11 @@ function handleFileUpload(event, fieldName) {
                                         <label class="file-upload-label">
                                             <!-- <input type="file" name="rg"> -->
                                             <input type="file" @change="
-                    handleFileUpload(
-                        $event,
-                        'rg_img'
-                    )
-                    " name="rg_img" required />
+                                                handleFileUpload(
+                                                    $event,
+                                                    'rg_img'
+                                                )
+                                                " name="rg_img" required />
                                             <img :src="rgPreview" class="w-40 mb-3" v-if="rgPreview" />
                                             <div class="w-full max-w-64 flex flex-col justify-center items-center"
                                                 v-else>

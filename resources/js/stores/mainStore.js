@@ -26,7 +26,7 @@ export const useMainStore = defineStore("mainStore", {
         }
         ,
         isDocumentStatus(statusId) {
-            return this.clientDocumentation.document?.status_id === statusId;
+            return this.clientDocumentation?.status_id === statusId;
         }
     },
 });
