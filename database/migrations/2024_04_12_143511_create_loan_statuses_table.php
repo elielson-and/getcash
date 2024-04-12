@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('requests', function (Blueprint $table) {
+        Schema::create('loan_statuses', function (Blueprint $table) {
             $table->id();
-            $table->decimal('value', 11, 2)->default(0);
-            $table->foreignId('user_id')->constrained();
-            $table->unsignedBigInteger('status_id');
-            $table->foreign('status_id')->references('id')->on('statuses');
+            $table->string('name'); // Pendente, Em Análise, Aprovado
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('requests');
+        Schema::dropIfExists('loan_statuses');
     }
 };

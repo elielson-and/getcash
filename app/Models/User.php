@@ -54,8 +54,8 @@ class User extends Authenticatable
         return $this->hasOne(Wallet::class);
     }
 
-    public function request()
+    public function loan()
     {
-        return $this->hasMany(Request::class);
+        return $this->hasMany(Loan::class);
     }
 }

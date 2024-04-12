@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Request extends Model
+class LoanStatus extends Model
 {
     use HasFactory;
+    protected $fillable = ['name'];
 
-    protected $fillable = ['value', 'user_id', 'status_id'];
 
-    public function user()
+    public function loan()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Loan::class);
     }
 }
