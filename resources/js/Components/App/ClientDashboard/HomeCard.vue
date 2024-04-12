@@ -73,17 +73,19 @@ const formattedBalance = computed(() => {
             <h3 v-else class="text-1xl font-bold ">Documentação em análise</h3>
         </div>
 
-        <div v-if="Documentation.status_id == 1 || Documentation.status_id == 4"
+        <div v-if="Documentation.status_id == 1 || Documentation.status_id == 4 || !Documentation.status_id"
             class="p-5 bg-red-100 rounded-xl flex justify-center items-center">
             <ExclamationCircleIcon class="w-10 text-red-400" />
         </div>
-        <div v-if="Documentation.status_id == 1 || Documentation.status_id == 4" class="flex flex-col">
+        <div v-if="Documentation.status_id == 1 || Documentation.status_id == 4 || !Documentation.status_id"
+            class="flex flex-col">
             <div v-if="IsLoading" class="skeleton w-full px-12 h-6 rounded-sm"></div>
             <div v-else>
                 <h3 class="text-1xl font-bold ">Documentação pendente</h3>
                 <small class="text-gray-400">Envie sua documentação</small>
             </div>
         </div>
+
 
     </div>
 </template>
