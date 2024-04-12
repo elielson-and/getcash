@@ -34,6 +34,11 @@ Route::middleware('auth', 'verified')->group(function () {
         return Inertia::render('Client/Terms');
     })->name('termos');
 
+    // Request Loan
+    Route::get('/solicitar-valor', function () {
+        return Inertia::render('Client/RequestLoan');
+    })->name('request.loan');
+
 
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -11,7 +11,10 @@ mainStore.getClientDocStatus();
 
 <template>
     <div class="w-1/2 md:w-full p-4 relative z-50" style="z-index: 10 !important;">
-        <button v-if="mainStore.documentationStatus === 3" class="btn w-full btn-success  text-white font-bold text-lg">
+
+        <Link v-if="mainStore.documentationStatus === 3" :href="route('request.loan')"
+            :class="{ 'bg-gray-200': url == '/painel-do-cliente' }">
+        <button class="btn w-full btn-success  text-white font-bold text-lg">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -20,6 +23,7 @@ mainStore.getClientDocStatus();
 
             Solicitar valor
         </button>
+        </Link>
         <div v-else class="tooltip tooltip-bottom w-full" data-tip="Documentação pendente!">
             <button
                 class="btn w-full flex-col gap-0 flex-wrap py-1 bg-gray-400 h-auto hover:bg-gray-400 text-white font-bold ">
