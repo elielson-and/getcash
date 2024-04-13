@@ -6,7 +6,12 @@ import { BanknotesIcon } from "@heroicons/vue/24/outline";
 import CurrencyMask from "@/Components/App/Input/CurrencyMask.vue";
 import axios from "axios";
 
+//-----
+const interest = ref(40); // Juros 0 - 100
+//-----
 const wallet = ref([]);
+
+const amountOfInstallments = ref(0);
 
 async function getWalletData() {
     await axios.get('/get-wallet')
@@ -42,61 +47,68 @@ onMounted(() => {
                             <label class="label">
                                 <span class="label-text">De quanto você precisa?</span>
                             </label>
-                            <!-- <input type="text" required class="input input-bordered" /> -->
                             <CurrencyMask required class="input input-bordered" v-model="testeValue"
-                                :maxValue="wallet.max_available_value" />
+                                :maxValue="wallet.max_available_value" :Interest="interest" />
                         </div>
 
 
-                        <div class="form-control">
+                        <!-- <div class="form-control">
                             <label class="label">
                                 <span class="label-text">Nome Completo:</span>
                             </label>
                             <input type="text" placeholder="Digite seu nome completo" :modelValue="10"
                                 class="input input-bordered" required />
-                        </div>
+                        </div> -->
+
+
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text">Sexo:</span>
+                                <span class="label-text">Parcelas</span>
                             </label>
                             <select class="select select-bordered" required>
                                 <option disabled selected>
                                     Selecione
                                 </option>
-                                <option value="m">
-                                    Masculino
+                                <option value="1">
+                                    1
                                 </option>
-                                <option value="f">
-                                    Feminino
+                                <option value="2">
+                                    2
+                                </option>
+
+                                <option value="3">
+                                    2
                                 </option>
                             </select>
                         </div>
+
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text">Data de Nascimento:</span>
+                                <span class="label-text">Dia do vencimento:</span>
                             </label>
-                            <input type="date" required class="input input-bordered" />
+                            <select class="select select-bordered" required>
+                                <option disabled selected>
+                                    Selecione
+                                </option>
+                                <option value="1">
+                                    1
+                                </option>
+                                <option value="5">
+                                    5
+                                </option>
+                                <option value="10">
+                                    10
+                                </option>
+                                <option value="15">
+                                    15
+                                </option>
+                            </select>
+                            <small class="text-gray-500">Esta é a <b>dia limite</b> do pagamento de sua(s)
+                                parcela(s)</small>
                         </div>
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Telefone:</span>
-                            </label>
-                            <input v-mask="'(##) #####-####'" required type="tel" placeholder="Digite seu telefone"
-                                class="input input-bordered" />
-                        </div>
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Email:</span>
-                            </label>
-                            <input type="email" placeholder="Digite seu email" required class="input input-bordered" />
-                        </div>
-                        <div class="form-control col-span-1 md:col-span-2 lg:col-span-3">
-                            <label class="label">
-                                <span class="label-text">Endereço Completo:</span>
-                            </label>
-                            <input type="text" placeholder="Digite seu endereço completo" required
-                                class="input input-bordered" />
-                        </div>
+
+
+
                     </div>
                     <div class="w-full my-5 flex justify-end">
                         <button class="btn btn-info bg-blue-500 text-white border-none">
