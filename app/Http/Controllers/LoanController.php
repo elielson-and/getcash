@@ -39,7 +39,7 @@ class LoanController extends Controller
     public function show(Loan $loan)
     {
         $loan = User::with('loan')->find(Auth::id());
-        return response()->json($loan, 200);
+        return response()->json($loan->loan, 200);
     }
 
     /**

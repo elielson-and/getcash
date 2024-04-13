@@ -6,15 +6,17 @@ import { BanknotesIcon } from "@heroicons/vue/24/outline";
 import CurrencyMask from "@/Components/App/Input/CurrencyMask.vue";
 import axios from "axios";
 
-const maxAvailableValue = ref();
+const wallet = ref([]);
 
-async function getLoan() {
-    const response = await axios.get('/get-loan');
-    maxAvailableValue.value = response.data;
+async function getWalletData() {
+    await axios.get('/get-wallet')
+        .then((response) => {
+            wallet.value = response.data;
+        });
 }
 
 onMounted(() => {
-    getLoan();
+    getWalletData();
 });
 
 </script>
@@ -28,7 +30,7 @@ onMounted(() => {
             <div class="w-full border-b-2 p-4 mb-4">
                 <div class="text-2xl text-gray-900 flex items-center">
                     <BanknotesIcon class="w-6 mr-2" />
-                    Solicitar empréstimo {{ maxAvailableValue }}
+                    Solicitar empréstimo
                 </div>
             </div>
 
@@ -41,7 +43,8 @@ onMounted(() => {
                                 <span class="label-text">De quanto você precisa?</span>
                             </label>
                             <!-- <input type="text" required class="input input-bordered" /> -->
-                            <CurrencyMask required class="input input-bordered" v-model="testeValue" :maxValue="1200" />
+                            <CurrencyMask required class="input input-bordered" v-model="testeValue"
+                                :maxValue="wallet.max_available_value" />
                         </div>
 
 
