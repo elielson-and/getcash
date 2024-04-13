@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Loan;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoanController extends Controller
 {
@@ -36,7 +38,8 @@ class LoanController extends Controller
      */
     public function show(Loan $loan)
     {
-        //
+        $loan = User::with('loan')->find(Auth::id());
+        return response()->json($loan, 200);
     }
 
     /**

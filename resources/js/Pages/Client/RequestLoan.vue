@@ -1,10 +1,22 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { BanknotesIcon } from "@heroicons/vue/24/outline";
 import CurrencyMask from "@/Components/App/Input/CurrencyMask.vue";
-const testeValue = ref();
+import axios from "axios";
+
+const maxAvailableValue = ref();
+
+async function getLoan() {
+    const response = await axios.get('/get-loan');
+    maxAvailableValue.value = response.data;
+}
+
+onMounted(() => {
+    getLoan();
+});
+
 </script>
 
 <template>
@@ -16,7 +28,7 @@ const testeValue = ref();
             <div class="w-full border-b-2 p-4 mb-4">
                 <div class="text-2xl text-gray-900 flex items-center">
                     <BanknotesIcon class="w-6 mr-2" />
-                    Solicitar empréstimo
+                    Solicitar empréstimo {{ maxAvailableValue }}
                 </div>
             </div>
 

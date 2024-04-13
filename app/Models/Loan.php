@@ -17,4 +17,10 @@ class Loan extends Model
         'installment_value',
         'loan_status_id'
     ];
+
+
+    public function LoanStatus()
+    {
+        return $this->hasOne(LoanStatus::class);
+    }
 }

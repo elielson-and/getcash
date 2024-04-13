@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Loan;
 use App\Models\LoanStatus;
 use App\Models\User;
 use App\Models\Status;
@@ -16,6 +17,7 @@ class DatabaseSeeder extends Seeder
         // Criação de status
         $this->createStatuses(['Pendente', 'Em análise', 'Aprovado', 'Revogado']);
         $this->createLoanStatuses(['Em análise', 'Vigente', 'Quitado', 'Cancelado']);
+        $this->createLoan();
     }
 
     /**
@@ -40,6 +42,8 @@ class DatabaseSeeder extends Seeder
         ]);
     }
 
+
+
     /**
      * Cria uma lista de status.
      *
@@ -62,5 +66,18 @@ class DatabaseSeeder extends Seeder
         foreach ($statuses as $status) {
             LoanStatus::factory()->create(['name' => $status]);
         }
+    }
+
+
+    private function createLoan(): void
+    {
+        Loan::factory()->create([
+            'value' => 20,
+            'user_id' => 2,
+            'installment_amount' => 1,
+            'current_installment' => 1,
+            'installment_value' => 10,
+            'loan_status_id' => 2
+        ]);
     }
 }

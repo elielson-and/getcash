@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientDocumentationController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\LoanController;
 use App\Http\Controllers\WalletController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -34,10 +35,12 @@ Route::middleware('auth', 'verified')->group(function () {
         return Inertia::render('Client/Terms');
     })->name('termos');
 
-    // Request Loan
+    // Loan
     Route::get('/solicitar-valor', function () {
         return Inertia::render('Client/RequestLoan');
     })->name('request.loan');
+
+    Route::get('/get-loan', [LoanController::class, 'show'])->name('loan.get');
 
 
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
