@@ -21,7 +21,6 @@ async function getWallet() {
     await axios.get('/get-wallet')
         .then((response) => {
             setTimeout(() => {
-
                 wallet.value = response.data;
                 mainStore.getClientDocStatus();
                 isLoading.value = false;
@@ -36,7 +35,6 @@ onMounted(() => {
 
 function greeting() {
     var hour = new Date().getHours();
-    console.log(hour)
     if (hour >= 5 && hour < 12) {
         return "Bom dia, ";
     } else if (hour >= 12 && hour < 18) {
@@ -94,7 +92,8 @@ function greeting() {
                 </div>
 
                 <div class="w-full absolute -bottom-20 z-20 flex flex-row justify-between gap-4 p-4 ">
-                    <HomeCard class="relative" CardName="balance" :Balance="wallet.balance" :IsLoading="isLoading" />
+                    <HomeCard class="relative" CardName="balance" :Balance="parseFloat(wallet.balance)"
+                        :IsLoading="isLoading" />
                     <HomeCard class="relative" CardName="score" :Score="wallet.score" :IsLoading="isLoading" />
                     <HomeCard class="relative" CardName="other" :IsLoading="isLoading"
                         :Documentation="mainStore.documentation" />

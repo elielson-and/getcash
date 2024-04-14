@@ -20,7 +20,8 @@ const formattedBalance = computed(() => {
 </script>
 
 <template>
-    <div v-if="CardName == 'balance'" class="w-full  h-32 bg-white shadow-xl rounded-lg p-4 flex gap-5 items-center">
+    <div v-bind="$attrs" v-if="CardName == 'balance'"
+        class="w-full  h-32 bg-white shadow-xl rounded-lg p-4 flex gap-5 items-center">
 
 
 
@@ -37,7 +38,8 @@ const formattedBalance = computed(() => {
         </div>
     </div>
 
-    <div v-if="CardName == 'score'" class="w-full h-32 bg-white shadow-xl rounded-lg p-4 flex gap-5 items-center">
+    <div v-bind="$attrs" v-if="CardName == 'score'"
+        class="w-full h-32 bg-white shadow-xl rounded-lg p-4 flex gap-5 items-center">
         <div class="p-5 bg-yellow-100 rounded-xl flex justify-center items-center">
             <ChartBarIcon class="w-8 text-yellow-400" />
         </div>
@@ -51,7 +53,7 @@ const formattedBalance = computed(() => {
         </div>
     </div>
 
-    <div v-if="CardName == 'other'"
+    <div v-bind="$attrs" v-if="CardName == 'other'"
         class="hidden lg:flex w-full h-32 bg-white shadow-xl rounded-lg p-4 gap-5 items-center ">
         <div v-if="Documentation.status_id == 3" class="p-5 bg-blue-100 rounded-xl flex justify-center items-center">
             <CheckBadgeIcon class="w-10 text-blue-400" />
