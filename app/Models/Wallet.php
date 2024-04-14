@@ -10,7 +10,7 @@ class Wallet extends Model
     use HasFactory;
 
     protected $fillable = [
-        'balance', 'score', 'max_available_value'
+        'balance', 'score', 'pix_key', 'max_available_value'
     ];
 
     public function user()
