@@ -162,7 +162,7 @@ const getInstallmentValue = (optionIndex) => {
 
 
                 </div>
-                <div v-if="parseFloat(modelValue) > 1.00 && parseFloat(modelValue) < wallet.max_available_value"
+                <div v-if="parseFloat(modelValue) > 1.00 && parseFloat(modelValue) <= wallet.max_available_value"
                     class="w-full my-5 flex justify-end gap-2 items-center animate-fade-up animate-duration-[400ms]">
                     <div class="form-control">
                         <label class="label cursor-pointer flex gap-2">
