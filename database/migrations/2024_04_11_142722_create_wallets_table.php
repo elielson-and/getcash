@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->decimal('balance', 11, 2)->default(0);
             $table->integer('score')->default(300);
-            $table->decimal('max_available_value')->default(200);
+            $table->decimal('max_available_value', 11, 2)->default(200);
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });

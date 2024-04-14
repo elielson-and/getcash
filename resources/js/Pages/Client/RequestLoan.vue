@@ -5,12 +5,13 @@ import { onMounted, ref } from "vue";
 import { BanknotesIcon } from "@heroicons/vue/24/outline";
 import CurrencyMask from "@/Components/App/Input/CurrencyMask.vue";
 import axios from "axios";
-
+const modelValue = ref('');
 //-----
 const interest = ref(40); // Juros 0 - 100
 //-----
 const wallet = ref([]);
-
+const minValueToAcceptInstallment = ref(100);
+const shuldFinance = ref(false); // deve parcelar
 const amountOfInstallments = ref(0);
 
 async function getWalletData() {
@@ -19,10 +20,19 @@ async function getWalletData() {
             wallet.value = response.data;
         });
 }
+function handleCleanPriceUpdate(cleanedPrice) {
+    modelValue.value = cleanedPrice;
+}
 
 onMounted(() => {
     getWalletData();
 });
+
+
+function handleInstallmentsAmount() {
+    shuldFinance.value = modelValue.value >= minValueToAcceptInstallment.value;
+}
+
 
 </script>
 
@@ -47,16 +57,16 @@ onMounted(() => {
                             <label class="label">
                                 <span class="label-text">De quanto você precisa?</span>
                             </label>
-                            <CurrencyMask required class="input input-bordered" v-model="testeValue"
-                                :maxValue="wallet.max_available_value" :Interest="interest" />
+                            <CurrencyMask required class="input input-bordered" v-model="modelValue"
+                                :maxValue="wallet.max_available_value" :Interest="interest"
+                                @updateCleanPrice="handleCleanPriceUpdate" />
                         </div>
-
 
                         <!-- <div class="form-control">
                             <label class="label">
                                 <span class="label-text">Nome Completo:</span>
                             </label>
-                            <input type="text" placeholder="Digite seu nome completo" :modelValue="10"
+                            <input type="text" placeholder="Digite seu nome completo" :typedValue="10"
                                 class="input input-bordered" required />
                         </div> -->
 
@@ -65,18 +75,18 @@ onMounted(() => {
                             <label class="label">
                                 <span class="label-text">Parcelas</span>
                             </label>
-                            <select class="select select-bordered" required>
+                            <select @focus="handleInstallmentsAmount()" class="select select-bordered" required>
                                 <option disabled selected>
                                     Selecione
                                 </option>
                                 <option value="1">
                                     1
                                 </option>
-                                <option value="2">
+                                <option v-if="shuldFinance" value="2">
                                     2
                                 </option>
 
-                                <option value="3">
+                                <option v-if="shuldFinance" value="3">
                                     2
                                 </option>
                             </select>
