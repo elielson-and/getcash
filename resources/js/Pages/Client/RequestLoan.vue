@@ -118,13 +118,13 @@ const getInstallmentValue = (optionIndex) => {
                         </label>
                         <select v-model="selectedAmountOfInstallments" @focus="handleInstallmentsAmount()"
                             class="select select-bordered" required>
-                            <option disabled selected>
+                            <option disabled>
                                 {{ shuldFinance ? 'Selecionar parcela' : 'Parcela unica disponivel' }}
                             </option>
 
                             <option v-for="(item, index) in amountOfInstallments " :key="index" :value="index++"
                                 :hidden="!shuldFinance" :selected="!shuldFinance && index == 0">
-                                {{ index }} x de {{ getInstallmentValue(index + 1) }}
+                                {{ index }} x de {{ getInstallmentValue(index) }}
                             </option>
 
                         </select>
