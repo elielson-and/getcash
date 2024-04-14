@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('installment_amount')->default(1);
             $table->integer('current_installment')->default(1);
             $table->decimal('installment_value', 11, 2)->default(0)->nullable();
+            $table->integer('current_interest')->default(40); // Juros no momento da solicitacao
             $table->integer('payment_day')->nullable();
             $table->unsignedBigInteger('loan_status_id');
             $table->foreign('loan_status_id')->references('id')->on('loan_statuses');

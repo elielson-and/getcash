@@ -23,8 +23,8 @@ const selectedAmountOfInstallments = ref(); // Deve-se incrementar + 1
 const installmentValue = ref(0);
 const totalLoanWithInterest = ref(0);
 const isTermsAccepted = ref(); // deve
-
-const confirmationRange = ref(0);
+const userPixKey = ref('');
+const confirmationRange = ref(10);
 
 async function getWalletData() {
     await axios.get('/get-wallet')
@@ -191,23 +191,27 @@ const getInstallmentValue = (optionIndex) => {
                         Valor da parcela: {{ getInstallmentValue(selectedAmountOfInstallments + 1) }}
                     </div>
 
-                    <div class="form-control">
+                    <div class="form-control ">
                         <label class="label">
                             <span class="label-text">Chave PIX para crédito do valor:</span>
                         </label>
-                        <input type="text" placeholder="Email, CPF, telefone, chave aleatória..."
-                            class="input input-bordered w-full" />
+                        <input type="text" v-model="userPixKey" placeholder="Email, CPF, telefone, chave aleatória..."
+                            class="input input-bordered w-full mb-5" />
 
                     </div>
 
-                    <div class="text-gray-600 flex mt-8">Arraste até o final para concluir a solicitação
-                        <ArrowLongRightIcon class="w-6" />
-                    </div>
-                    <input type="range" v-model="confirmationRange" min="0" max="100" value="10"
-                        class="range py-5 rounded-xl mb-8"
-                        :class="confirmationRange < 70 ? 'range-info' : 'range-success'" />
 
+                    <div v-if="userPixKey.length > 5" class="my-8 animate-fade-right animate-duration-300">
+                        <div class="text-gray-600 flex ">Arraste até o final para concluir a solicitação
+                            <ArrowLongRightIcon class="w-6" />
+                        </div>
+                        <input type="range" v-model="confirmationRange" min="0" max="100" class="range py-5 rounded-xl "
+                            :class="confirmationRange < 70 ? 'range-info' : 'range-success'" />
+                    </div>
                 </div>
+                <form method="dialog" class="modal-backdrop">
+                    <button>close</button>
+                </form>
             </dialog>
 
         </div>
