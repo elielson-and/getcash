@@ -107,7 +107,7 @@ const getInstallmentValue = (optionIndex) => {
                         <label class="label">
                             <span class="label-text">De quanto você precisa?</span>
                         </label>
-                        <CurrencyMask required class="input input-bordered" ref="target" v-model="modelValue"
+                        <CurrencyMask class="input input-bordered" ref="target" v-model="modelValue"
                             :maxValue="wallet.max_available_value" :Interest="interest"
                             @updateCleanPrice="handleCleanPriceUpdate" />
                     </div>
