@@ -10,13 +10,14 @@ import axios from "axios";
 const target = ref(null); // Clickoutside
 
 const modelValue = ref('');
+const valueWithInterest = ref();
 //-----
 const interest = ref(40); // Juros 0 - 100
 //-----
 const wallet = ref([]);
 const minValueToAcceptInstallment = ref(100);
 const shuldFinance = ref(false); // deve parcelar
-const amountOfInstallments = ref(0);
+const amountOfInstallments = ref(3);
 
 async function getWalletData() {
     await axios.get('/get-wallet')
@@ -33,8 +34,9 @@ onMounted(() => {
 });
 
 
+
+// Installments quantities handling
 function handleInstallmentsAmount() {
-    // TODO: chamar essa funcao ao finalizar solicitacao
     shuldFinance.value = modelValue.value >= minValueToAcceptInstallment.value;
 }
 
@@ -42,6 +44,11 @@ onClickOutside(target, event => {
     shuldFinance.value = modelValue.value >= minValueToAcceptInstallment.value;
 });
 
+
+// Installment calculation
+function calculateEachInstallmentValue() {
+
+}
 
 </script>
 
@@ -86,18 +93,25 @@ onClickOutside(target, event => {
                             </label>
                             <select @focus="handleInstallmentsAmount()" class="select select-bordered" required>
                                 <option disabled>
-                                    Selecione
+                                    {{ shuldFinance ? 'Selecionar parcela' : 'Parcela unica disponivel' }}
                                 </option>
+
+                                <option v-for="(item, index) in amountOfInstallments" :key="index" :value="index"
+                                    :hidden="!shuldFinance" :selected="!shuldFinance && index == 0">
+                                    {{ index + 1 }} x de R$134
+                                </option>
+                                <!--                                 
                                 <option value="1" :selected="!shuldFinance">
                                     1 x de R$134
                                 </option>
+
                                 <option v-if="shuldFinance" value="2">
                                     2
                                 </option>
 
                                 <option v-if="shuldFinance" value="3">
                                     2
-                                </option>
+                                </option> -->
                             </select>
                         </div>
 
