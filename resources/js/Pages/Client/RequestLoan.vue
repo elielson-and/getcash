@@ -2,9 +2,13 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import { onMounted, ref } from "vue";
+import { onClickOutside } from '@vueuse/core'
 import { BanknotesIcon } from "@heroicons/vue/24/outline";
 import CurrencyMask from "@/Components/App/Input/CurrencyMask.vue";
 import axios from "axios";
+
+const target = ref(null); // Clickoutside
+
 const modelValue = ref('');
 //-----
 const interest = ref(40); // Juros 0 - 100
@@ -30,8 +34,13 @@ onMounted(() => {
 
 
 function handleInstallmentsAmount() {
+    // TODO: chamar essa funcao ao finalizar solicitacao
     shuldFinance.value = modelValue.value >= minValueToAcceptInstallment.value;
 }
+
+onClickOutside(target, event => {
+    shuldFinance.value = modelValue.value >= minValueToAcceptInstallment.value;
+});
 
 
 </script>
@@ -57,7 +66,7 @@ function handleInstallmentsAmount() {
                             <label class="label">
                                 <span class="label-text">De quanto você precisa?</span>
                             </label>
-                            <CurrencyMask required class="input input-bordered" v-model="modelValue"
+                            <CurrencyMask required class="input input-bordered" ref="target" v-model="modelValue"
                                 :maxValue="wallet.max_available_value" :Interest="interest"
                                 @updateCleanPrice="handleCleanPriceUpdate" />
                         </div>
@@ -76,11 +85,11 @@ function handleInstallmentsAmount() {
                                 <span class="label-text">Parcelas</span>
                             </label>
                             <select @focus="handleInstallmentsAmount()" class="select select-bordered" required>
-                                <option disabled selected>
+                                <option disabled>
                                     Selecione
                                 </option>
-                                <option value="1">
-                                    1
+                                <option value="1" :selected="!shuldFinance">
+                                    1 x de R$134
                                 </option>
                                 <option v-if="shuldFinance" value="2">
                                     2
