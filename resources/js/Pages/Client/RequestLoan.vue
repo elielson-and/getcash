@@ -100,16 +100,13 @@ const getInstallmentValue = (optionIndex) => {
     }).format(totalLoanWithInterest / optionIndex);
 }
 
-// function submitLoanRequest() {
-//     isSubmited.value = true;
-// }
-
 
 watch(confirmationRange, (newValue, oldValue) => {
     if (newValue == 100) {
         submit();
     }
 });
+
 
 const submit = () => {
     router.post('/request-loan', {
@@ -119,7 +116,11 @@ const submit = () => {
         installment_value: parseFloat((parseFloat(modelValue.value) * (interest.value / 100) + parseFloat(modelValue.value)) / (selectedAmountOfInstallments.value + 1)).toFixed(2),
         current_interest: interest.value,
         payment_day: paymentDay.value
-    })
+    });
+
+    // router.get('/solicitar-valor')
+
+
 };
 
 </script>
@@ -215,47 +216,65 @@ const submit = () => {
 
 
             <dialog id="modal_confirm_loan" class="modal modal-bottom sm:modal-middle " style="user-select: none;">
-                <div v-if="success == true" class="modal-box p-4 flex flex-col gap-3 ">
-                    <Vue3Lottie class="z-10" :animationData="CheckPayment" :width="150" :loop="false" :speed="1" />
-                    <h2 class="text-center text-xl text-gray-600 font-bold">
-                        Solicitação de empréstimo realizada com sucesso. Acompanhe o status na tela de transações.
-                    </h2>
+                <div class="modal-box">
+                    <div v-if="success == true" class="w-full p-4 flex flex-col gap-3 ">
+                        <Vue3Lottie class="z-10" :animationData="CheckPayment" :width="150" :loop="false" :speed="1" />
+                        <h2 class="text-center text-xl text-gray-600 font-bold">
+                            Solicitação de empréstimo realizada com sucesso. Acompanhe o status na tela de transações.
+                        </h2>
 
-                    <Link :href="route('transacoes')" class="text-center mb-8 text-blue-600 hover:underline ">
-                    Ver minhas solicitações >
-                    </Link>
-                </div>
-                <div v-else class="modal-box">
-
-                    <h3 class="font-bold text-lg">Resumo da solicitação</h3>
-
-                    <div class="bg-green-50 my-5 p-4 rounded-md ">
-                        Valor solicitado: {{ getMaskedValue() }} <br>
-                        Total de parcelas: {{ selectedAmountOfInstallments + 1 }} <br>
-                        Valor da parcela: {{ getInstallmentValue(selectedAmountOfInstallments + 1) }}
+                        <Link :href="route('transacoes')" class="text-center mb-8 text-blue-600 hover:underline ">
+                        Ver minhas solicitações >
+                        </Link>
                     </div>
+                    <div v-else class="w-full">
 
-                    <div class="form-control ">
-                        <label class="label">
-                            <span class="label-text">Chave PIX para crédito do valor:</span>
-                        </label>
-                        <input type="text" v-model="userPixKey" placeholder="Email, CPF, telefone, chave aleatória..."
-                            class="input input-bordered w-full mb-5" />
+                        <h3 class="font-bold text-lg">Resumo da solicitação</h3>
 
-                    </div>
-
-
-                    <div v-if="userPixKey.length > 5" class="my-8 animate-fade-right animate-duration-300">
-                        <div class="text-gray-600 flex ">Arraste até o final para concluir a solicitação
-                            <ArrowLongRightIcon class="w-6" />
+                        <div class="bg-green-50 my-5 p-4 rounded-md ">
+                            Valor solicitado: {{ getMaskedValue() }} <br>
+                            Total de parcelas: {{ selectedAmountOfInstallments + 1 }} <br>
+                            Valor da parcela: {{ getInstallmentValue(selectedAmountOfInstallments + 1) }}
                         </div>
-                        <input type="range" v-model="confirmationRange" min="0" max="100" class="range py-5 rounded-xl "
-                            :class="confirmationRange < 70 ? 'range-info' : 'range-success'" />
+
+                        <div class="form-control ">
+                            <label class="label">
+                                <span class="label-text">Chave PIX para crédito do valor:</span>
+                            </label>
+                            <input type="text" v-model="userPixKey"
+                                placeholder="Email, CPF, telefone, chave aleatória..."
+                                class="input input-bordered w-full mb-5" />
+
+                        </div>
+
+
+                        <div v-if="userPixKey.length > 5" class="my-8 animate-fade-right animate-duration-300">
+                            <div class="text-gray-600 flex ">Arraste até o final para concluir a solicitação
+                                <ArrowLongRightIcon class="w-6" />
+                            </div>
+                            <input type="range" v-model="confirmationRange" min="0" max="100"
+                                class="range py-5 rounded-xl "
+                                :class="confirmationRange < 70 ? 'range-info' : 'range-success'" />
+                        </div>
+
                     </div>
+
+                    <div v-if="success == true" class="w-full">
+                        <button @click="router.get('/solicitar-valor')" class="btn w-full">Fechar</button>
+                    </div>
+                    <form v-else method="dialog" class="w-full">
+                        <button class="btn w-full">Cancelar</button>
+                    </form>
+
+
+
                 </div>
-                <form method="dialog" class="modal-backdrop">
-                    <button @click="confirmationRange = 10">close</button>
-                </form>
+
+
+                <!-- <form method=" dialog" class="modal-backdrop">
+                            <button @click="confirmationRange = 10">close</button>
+                    </form> -->
+
             </dialog>
         </div>
     </AuthenticatedLayout>
