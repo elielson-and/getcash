@@ -12,12 +12,13 @@ import axios from "axios";
 import { computed } from "vue";
 import { reactive } from "vue";
 
-// defineProps({
-//     user: {
-//         type: Object,
-//     },
+defineProps({
+    success: {
+        type: Boolean,
+        default: null
+    },
 
-// });
+});
 
 const page = usePage()
 
@@ -42,8 +43,6 @@ const totalLoanWithInterest = ref(0);
 const isTermsAccepted = ref(); // deve
 const userPixKey = ref('');
 const confirmationRange = ref(10);
-const isSubmited = ref(false);
-
 
 async function getWalletData() {
     await axios.get('/get-wallet')
@@ -101,14 +100,14 @@ const getInstallmentValue = (optionIndex) => {
     }).format(totalLoanWithInterest / optionIndex);
 }
 
-function submitLoanRequest() {
-    isSubmited.value = true;
-}
+// function submitLoanRequest() {
+//     isSubmited.value = true;
+// }
 
 
 watch(confirmationRange, (newValue, oldValue) => {
     if (newValue == 100) {
-        submitLoanRequest();
+        submit();
     }
 });
 
@@ -216,7 +215,7 @@ const submit = () => {
 
 
             <dialog id="modal_confirm_loan" class="modal modal-bottom sm:modal-middle " style="user-select: none;">
-                <div v-if="isSubmited" class="modal-box p-4 flex flex-col gap-3 ">
+                <div v-if="success == true" class="modal-box p-4 flex flex-col gap-3 ">
                     <Vue3Lottie class="z-10" :animationData="CheckPayment" :width="150" :loop="false" :speed="1" />
                     <h2 class="text-center text-xl text-gray-600 font-bold">
                         Solicitação de empréstimo realizada com sucesso. Acompanhe o status na tela de transações.
