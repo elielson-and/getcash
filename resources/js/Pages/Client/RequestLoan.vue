@@ -1,11 +1,13 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
+import { Vue3Lottie } from 'vue3-lottie';
 import { onClickOutside } from '@vueuse/core'
 import { ArrowLongRightIcon, ArrowLeftIcon } from "@heroicons/vue/24/solid";
 import { BanknotesIcon } from "@heroicons/vue/24/outline";
 import CurrencyMask from "@/Components/App/Input/CurrencyMask.vue";
+import CheckPayment from '@/Lottie/CheckPayment.json';
 import axios from "axios";
 
 const target = ref(null); // Clickoutside
@@ -25,6 +27,7 @@ const totalLoanWithInterest = ref(0);
 const isTermsAccepted = ref(); // deve
 const userPixKey = ref('');
 const confirmationRange = ref(10);
+const isSubmited = ref(false);
 
 async function getWalletData() {
     await axios.get('/get-wallet')
@@ -84,6 +87,18 @@ const getInstallmentValue = (optionIndex) => {
     }).format(totalLoanWithInterest / optionIndex);
 }
 
+function submitLoanRequest() {
+    isSubmited.value = true;
+}
+
+
+watch(confirmationRange, (newValue, oldValue) => {
+    if (newValue == 100) {
+        submitLoanRequest();
+    }
+});
+
+
 </script>
 
 <template>
@@ -95,7 +110,7 @@ const getInstallmentValue = (optionIndex) => {
             <div class="w-full border-b-2 p-4 mb-4">
                 <div class="text-2xl text-gray-900 flex items-center">
                     <BanknotesIcon class="w-6 mr-2" />
-                    Solicitar empréstimo {{ totalLoanWithInterest }}
+                    Solicitar empréstimo
                 </div>
             </div>
 
@@ -157,10 +172,6 @@ const getInstallmentValue = (optionIndex) => {
                             parcela(s)</small>
                     </div>
 
-
-
-
-
                 </div>
                 <div v-if="parseFloat(modelValue) > 1.00 && parseFloat(modelValue) <= wallet.max_available_value"
                     class="w-full my-5 flex justify-end gap-2 items-center animate-fade-up animate-duration-[400ms]">
@@ -181,7 +192,17 @@ const getInstallmentValue = (optionIndex) => {
 
 
             <dialog id="modal_confirm_loan" class="modal modal-bottom sm:modal-middle">
-                <div class="modal-box">
+                <div v-if="isSubmited" class="modal-box p-4 flex flex-col gap-3 ">
+                    <Vue3Lottie class="z-10" :animationData="CheckPayment" :width="150" :loop="false" :speed="1" />
+                    <h2 class="text-center text-xl text-gray-600 font-bold">
+                        Solicitação de empréstimo realizada com sucesso. Acompanhe o status na tela de transações.
+                    </h2>
+
+                    <Link :href="route('transacoes')" class="text-center mb-8 text-blue-600 hover:underline ">
+                    Ver minhas solicitações >
+                    </Link>
+                </div>
+                <div v-else class="modal-box">
 
                     <h3 class="font-bold text-lg">Resumo da solicitação</h3>
 
@@ -210,7 +231,7 @@ const getInstallmentValue = (optionIndex) => {
                     </div>
                 </div>
                 <form method="dialog" class="modal-backdrop">
-                    <button>close</button>
+                    <button @click="confirmationRange = 10">close</button>
                 </form>
             </dialog>
 
