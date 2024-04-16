@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('wallets', function (Blueprint $table) {
             $table->id();
             $table->decimal('balance', 11, 2)->default(0);
-            $table->integer('score')->default(300);
+            $table->integer('score')->default(1000);
             $table->string('pix_key')->nullable();
             $table->decimal('max_available_value', 11, 2)->default(200);
             $table->foreignId('user_id')->constrained();

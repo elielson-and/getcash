@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
 
         // Criação de status
         $this->createStatuses(['Pendente', 'Em análise', 'Aprovado', 'Revogado']);
-        $this->createLoanStatuses(['Em análise', 'Vigente', 'Quitado', 'Cancelado']);
+        $this->createLoanStatuses(['Aguardando aprovação', 'Vigente', 'Quitado', 'Cancelado']);
         $this->createLoan();
     }
 

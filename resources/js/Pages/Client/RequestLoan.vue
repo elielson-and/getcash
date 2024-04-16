@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage, router } from "@inertiajs/vue3";
 import { onMounted, ref, watch } from "vue";
 import { Vue3Lottie } from 'vue3-lottie';
 import { onClickOutside } from '@vueuse/core'
@@ -9,6 +9,21 @@ import { BanknotesIcon } from "@heroicons/vue/24/outline";
 import CurrencyMask from "@/Components/App/Input/CurrencyMask.vue";
 import CheckPayment from '@/Lottie/CheckPayment.json';
 import axios from "axios";
+import { computed } from "vue";
+import { reactive } from "vue";
+
+// defineProps({
+//     user: {
+//         type: Object,
+//     },
+
+// });
+
+const page = usePage()
+
+const user = computed(() => page.props.auth.user)
+
+
 
 const target = ref(null); // Clickoutside
 
@@ -19,15 +34,16 @@ const interest = ref(40); // Juros 0 - 100
 const wallet = ref([]);
 const minValueToAcceptInstallment = ref(100);
 const shuldFinance = ref(false); // deve parcelar
-const amountOfInstallments = ref(3); // Numero de parcelas
+const amountOfInstallments = ref(3); // Numero de parcelas (backend)
 const selectedAmountOfInstallments = ref(); // Deve-se incrementar + 1
-
+const paymentDay = ref();
 const installmentValue = ref(0);
 const totalLoanWithInterest = ref(0);
 const isTermsAccepted = ref(); // deve
 const userPixKey = ref('');
 const confirmationRange = ref(10);
 const isSubmited = ref(false);
+
 
 async function getWalletData() {
     await axios.get('/get-wallet')
@@ -42,8 +58,6 @@ function handleCleanPriceUpdate(cleanedPrice) {
 onMounted(() => {
     getWalletData();
 });
-
-
 
 // Installments quantities handling
 function handleInstallmentsAmount() {
@@ -98,6 +112,16 @@ watch(confirmationRange, (newValue, oldValue) => {
     }
 });
 
+const submit = () => {
+    router.post('/request-loan', {
+        value: modelValue.value,
+        user_id: user.id,
+        installment_amount: selectedAmountOfInstallments.value + 1,
+        installment_value: parseFloat((parseFloat(modelValue.value) * (interest.value / 100) + parseFloat(modelValue.value)) / (selectedAmountOfInstallments.value + 1)).toFixed(2),
+        current_interest: interest.value,
+        payment_day: paymentDay.value
+    })
+};
 
 </script>
 
@@ -110,7 +134,7 @@ watch(confirmationRange, (newValue, oldValue) => {
             <div class="w-full border-b-2 p-4 mb-4">
                 <div class="text-2xl text-gray-900 flex items-center">
                     <BanknotesIcon class="w-6 mr-2" />
-                    Solicitar empréstimo
+                    Solicitar empréstimo <button @click="submit">teste</button>
                 </div>
             </div>
 
@@ -151,7 +175,7 @@ watch(confirmationRange, (newValue, oldValue) => {
                         <label class="label">
                             <span class="label-text">Dia do vencimento:</span>
                         </label>
-                        <select class="select select-bordered" required>
+                        <select class="select select-bordered" required v-model="paymentDay">
                             <option disabled selected>
                                 Selecione
                             </option>
@@ -191,7 +215,7 @@ watch(confirmationRange, (newValue, oldValue) => {
             </div>
 
 
-            <dialog id="modal_confirm_loan" class="modal modal-bottom sm:modal-middle">
+            <dialog id="modal_confirm_loan" class="modal modal-bottom sm:modal-middle " style="user-select: none;">
                 <div v-if="isSubmited" class="modal-box p-4 flex flex-col gap-3 ">
                     <Vue3Lottie class="z-10" :animationData="CheckPayment" :width="150" :loop="false" :speed="1" />
                     <h2 class="text-center text-xl text-gray-600 font-bold">
@@ -234,7 +258,6 @@ watch(confirmationRange, (newValue, oldValue) => {
                     <button @click="confirmationRange = 10">close</button>
                 </form>
             </dialog>
-
         </div>
     </AuthenticatedLayout>
 </template>

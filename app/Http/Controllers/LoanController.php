@@ -6,6 +6,7 @@ use App\Models\Loan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class LoanController extends Controller
 {
@@ -14,7 +15,8 @@ class LoanController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        return Inertia::render('Client/RequestLoan', ['user' => $user]);
     }
 
     /**
@@ -30,7 +32,19 @@ class LoanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            Loan::create([
+                'value' => $request->value,
+                'user_id' => Auth::id(),
+                'installment_amount' => $request->installment_amount,
+                'installment_value' => $request->installment_value,
+                'payment_day' => $request->payment_day
+            ]);
+
+            return Inertia::render('Client/RequestLoan', ['success' => true]);
+        } catch (\Throwable $th) {
+            return Inertia::render('Client/RequestLoan', ['success' => false]);
+        }
     }
 
     /**

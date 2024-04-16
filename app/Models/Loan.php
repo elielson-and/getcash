@@ -15,7 +15,9 @@ class Loan extends Model
         'installment_amount',
         'current_installment',
         'installment_value',
-        'loan_status_id'
+        'loan_status_id',
+        'current_interest',
+        'payment_day'
     ];
 
 

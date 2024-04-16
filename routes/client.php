@@ -36,11 +36,15 @@ Route::middleware('auth', 'verified')->group(function () {
     })->name('termos');
 
     // Loan
-    Route::get('/solicitar-valor', function () {
-        return Inertia::render('Client/RequestLoan');
-    })->name('request.loan');
-
+    // Route::get('/solicitar-valor', function () {
+    //     return Inertia::render('Client/RequestLoan');
+    // })->name('request.loan');
+    Route::get('/solicitar-valor', [LoanController::class, 'index'])->name('request.loan');
     Route::get('/get-loan', [LoanController::class, 'show'])->name('loan.get');
+
+    // do request loan
+    Route::post('/request-loan', [LoanController::class, 'store'])->name('request.loan.store');
+
 
 
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
