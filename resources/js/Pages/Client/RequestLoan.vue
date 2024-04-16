@@ -8,6 +8,8 @@ import { ArrowLongRightIcon, ArrowLeftIcon } from "@heroicons/vue/24/solid";
 import { BanknotesIcon } from "@heroicons/vue/24/outline";
 import CurrencyMask from "@/Components/App/Input/CurrencyMask.vue";
 import CheckPayment from '@/Lottie/CheckPayment.json';
+import ErrorAnimation from '@/Lottie/ErrorAnimation.json';
+import MoneyLoading from '@/Lottie/MoneyLoading.json';
 import axios from "axios";
 import { computed } from "vue";
 import { reactive } from "vue";
@@ -24,7 +26,7 @@ const page = usePage()
 
 const user = computed(() => page.props.auth.user)
 
-
+const isLoading = ref(false);
 
 const target = ref(null); // Clickoutside
 
@@ -104,11 +106,14 @@ const getInstallmentValue = (optionIndex) => {
 watch(confirmationRange, (newValue, oldValue) => {
     if (newValue == 100) {
         submit();
+
     }
 });
 
 
 const submit = () => {
+    isLoading.value = true;
+
     router.post('/request-loan', {
         value: modelValue.value,
         user_id: user.id,
@@ -117,10 +122,9 @@ const submit = () => {
         current_interest: interest.value,
         payment_day: paymentDay.value
     });
-
-    // router.get('/solicitar-valor')
-
-
+    setTimeout(() => {
+        isLoading.value = false;
+    }, 3000);
 };
 
 </script>
@@ -217,50 +221,76 @@ const submit = () => {
 
             <dialog id="modal_confirm_loan" class="modal modal-bottom sm:modal-middle " style="user-select: none;">
                 <div class="modal-box">
-                    <div v-if="success == true" class="w-full p-4 flex flex-col gap-3 ">
-                        <Vue3Lottie class="z-10" :animationData="CheckPayment" :width="150" :loop="false" :speed="1" />
-                        <h2 class="text-center text-xl text-gray-600 font-bold">
-                            Solicitação de empréstimo realizada com sucesso. Acompanhe o status na tela de transações.
+
+                    <div v-if="isLoading" class="w-full p-4 flex flex-col gap-3 ">
+                        <Vue3Lottie class="z-10" :animationData="MoneyLoading" :width="190" :loop="true" :speed="1" />
+                        <h2 class="text-center text-2xl text-gray-600 font-bold">
+                            Quase lá.. <br> só mais um momento..
                         </h2>
 
-                        <Link :href="route('transacoes')" class="text-center mb-8 text-blue-600 hover:underline ">
-                        Ver minhas solicitações >
-                        </Link>
                     </div>
                     <div v-else class="w-full">
+                        <div v-if="success === true" class="w-full p-4 flex flex-col gap-3 ">
+                            <Vue3Lottie class="z-10" :animationData="CheckPayment" :width="150" :loop="false"
+                                :speed="1" />
+                            <h2 class="text-center text-xl text-gray-600 font-bold">
+                                Solicitação de empréstimo realizada com sucesso. Acompanhe o status na tela de
+                                transações.
+                            </h2>
 
-                        <h3 class="font-bold text-lg">Resumo da solicitação</h3>
-
-                        <div class="bg-green-50 my-5 p-4 rounded-md ">
-                            Valor solicitado: {{ getMaskedValue() }} <br>
-                            Total de parcelas: {{ selectedAmountOfInstallments + 1 }} <br>
-                            Valor da parcela: {{ getInstallmentValue(selectedAmountOfInstallments + 1) }}
+                            <Link :href="route('transacoes')" class="text-center mb-8 text-blue-600 hover:underline ">
+                            Ver minhas solicitações >
+                            </Link>
                         </div>
-
-                        <div class="form-control ">
-                            <label class="label">
-                                <span class="label-text">Chave PIX para crédito do valor:</span>
-                            </label>
-                            <input type="text" v-model="userPixKey"
-                                placeholder="Email, CPF, telefone, chave aleatória..."
-                                class="input input-bordered w-full mb-5" />
+                        <div v-if="success === false" class="w-full p-4 flex flex-col gap-3 ">
+                            <Vue3Lottie class="z-10" :animationData="ErrorAnimation" :width="150" :loop="false"
+                                :speed="1" />
+                            <h2 class="text-center text-xl text-gray-600 font-bold">
+                                Ocorreu um problema na sua solicitação, por favor, tente novamente mais tarde ou contate
+                                o
+                                nosso suporte.
+                            </h2>
 
                         </div>
+                        <div v-if="!success" class="w-full">
 
+                            <h3 class="font-bold text-lg">Resumo da solicitação</h3>
 
-                        <div v-if="userPixKey.length > 5" class="my-8 animate-fade-right animate-duration-300">
-                            <div class="text-gray-600 flex ">Arraste até o final para concluir a solicitação
-                                <ArrowLongRightIcon class="w-6" />
+                            <div class="bg-green-50 my-5 p-4 rounded-md ">
+                                Valor solicitado: {{ getMaskedValue() }} <br>
+                                Total de parcelas: {{ selectedAmountOfInstallments + 1 }} <br>
+                                Valor da parcela: {{ getInstallmentValue(selectedAmountOfInstallments + 1) }}
                             </div>
-                            <input type="range" v-model="confirmationRange" min="0" max="100"
-                                class="range py-5 rounded-xl "
-                                :class="confirmationRange < 70 ? 'range-info' : 'range-success'" />
-                        </div>
 
+                            <div class="form-control ">
+                                <label class="label">
+                                    <span class="label-text">Chave PIX para crédito do valor:</span>
+                                </label>
+                                <input type="text" v-model="userPixKey"
+                                    placeholder="Email, CPF, telefone, chave aleatória..."
+                                    class="input input-bordered w-full mb-5" />
+
+                            </div>
+
+
+                            <div v-if="userPixKey.length > 5" class="my-8 animate-fade-right animate-duration-300">
+                                <div class="text-gray-600 flex ">Arraste até o final para concluir a solicitação
+                                    <ArrowLongRightIcon class="w-6" />
+                                </div>
+                                <input type="range" v-model="confirmationRange" min="0" max="100"
+                                    class="range py-5 rounded-xl "
+                                    :class="confirmationRange < 70 ? 'range-info' : 'range-success'" />
+                            </div>
+
+                        </div>
                     </div>
 
-                    <div v-if="success == true" class="w-full">
-                        <button @click="router.get('/solicitar-valor')" class="btn w-full">Fechar</button>
+
+
+
+                    <div v-if="success === true || success === false" class="w-full">
+                        <button v-if="!isLoading" @click="router.get('/solicitar-valor')"
+                            class="btn w-full">Fechar</button>
                     </div>
                     <form v-else method="dialog" class="w-full">
                         <button class="btn w-full">Cancelar</button>
@@ -271,9 +301,6 @@ const submit = () => {
                 </div>
 
 
-                <!-- <form method=" dialog" class="modal-backdrop">
-                            <button @click="confirmationRange = 10">close</button>
-                    </form> -->
 
             </dialog>
         </div>
