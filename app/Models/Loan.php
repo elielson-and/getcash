@@ -21,8 +21,8 @@ class Loan extends Model
     ];
 
 
-    public function LoanStatus()
+    public function loanStatus()
     {
-        return $this->hasOne(LoanStatus::class);
+        return $this->belongsTo(LoanStatus::class);
     }
 }

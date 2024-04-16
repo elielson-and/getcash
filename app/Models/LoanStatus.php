@@ -11,8 +11,8 @@ class LoanStatus extends Model
     protected $fillable = ['name'];
 
 
-    public function loan()
+    public function loans()
     {
-        return $this->belongsTo(Loan::class);
+        return $this->hasMany(Loan::class);
     }
 }

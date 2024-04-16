@@ -52,8 +52,15 @@ class LoanController extends Controller
      */
     public function show(Loan $loan)
     {
-        $loan = User::with('loan')->find(Auth::id());
-        return response()->json($loan->loan, 200);
+        $user_id = Auth::id();
+        $loan = User::with('loan.loanStatus')
+            ->where('id', $user_id)
+            ->first()
+            ->loan
+            ->load('loanStatus');
+        return response()->json($loan, 200);
+        // $loan = User::with('loan.loanStatus')->find($user_id)->loan()->first();
+        // $document = User::find($user_id)->document()->with('status')->first();
     }
 
     /**

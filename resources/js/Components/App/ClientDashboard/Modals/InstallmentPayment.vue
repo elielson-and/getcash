@@ -16,7 +16,6 @@ const copyPixToClipboard = (() => {
 
 onMounted(() => {
     modalID.value = 'modal_' + Math.floor(Math.random() * 10000000);
-    console.log(modalID.value)
 });
 
 const showModal = () => {
@@ -27,7 +26,7 @@ const showModal = () => {
 </script>
 
 <template>
-    <button @click="showModal()" class="btn btn-success btn-sm  text-white">Pagar </button>
+    <button @click="showModal()" class="btn btn-success btn-sm  text-white"> Pagar / Detalhes</button>
 
     <dialog :id="modalID" class="modal">
         <div class="modal-box">
