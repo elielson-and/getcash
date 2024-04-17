@@ -273,12 +273,12 @@ const submit = () => {
                             </div>
 
 
-                            <div v-if="userPixKey.length > 5" class="my-8 animate-fade-right animate-duration-300">
+                            <div v-if="userPixKey.length > 5" class="my-8 animate-shake animate-once">
                                 <div class="text-gray-600 flex ">Arraste até o final para concluir a solicitação
                                     <ArrowLongRightIcon class="w-6" />
                                 </div>
                                 <input type="range" v-model="confirmationRange" min="0" max="100"
-                                    class="range py-5 rounded-xl "
+                                    class="range py-5 rounded-xl  "
                                     :class="confirmationRange < 70 ? 'range-info' : 'range-success'" />
                             </div>
 

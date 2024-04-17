@@ -1,15 +1,14 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
-import { onMounted, ref } from "vue";
-import { ArrowsRightLeftIcon, ClockIcon } from "@heroicons/vue/24/outline";
+import {Head, Link, useForm} from "@inertiajs/vue3";
+import {onMounted, ref} from "vue";
+import {ArrowsRightLeftIcon, ClockIcon} from "@heroicons/vue/24/outline";
 import axios from "axios";
 
 import InstallmentPayment from '@/Components/App/ClientDashboard/Modals/InstallmentPayment.vue';
 
 const isLoading = ref(false);
 const loans = ref();
-
 
 
 //listagem de solicitacoes
@@ -39,13 +38,13 @@ onMounted(() => {
 
 <template>
 
-    <Head title="Dashboard" />
+    <Head title="Dashboard"/>
 
     <AuthenticatedLayout>
         <div class="bg-white w-full overflow-hidden shadow-sm sm:rounded-lg">
             <div class="w-full border-b-2 p-4 mb-4">
                 <div class="text-2xl text-gray-900 flex items-center">
-                    <ArrowsRightLeftIcon class="w-6 mr-2" />
+                    <ArrowsRightLeftIcon class="w-6 mr-2"/>
                     Minhas transações
                 </div>
             </div>
@@ -61,41 +60,41 @@ onMounted(() => {
                     <table v-if="loans" class="table table-zebra border">
                         <!-- head -->
                         <thead>
-                            <tr>
-                                <th>Status</th>
-                                <th>Valor</th>
-                                <th>Parcela</th>
-                                <th>Data solicitação</th>
-                                <th>Pagamento/detalhes</th>
-                            </tr>
+                        <tr>
+                            <th>Status</th>
+                            <th>Valor</th>
+                            <th>Parcela</th>
+                            <th>Data solicitação</th>
+                            <th>Pagamento/detalhes</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(loan, index) in loans" :key="loan.id">
-                                <th>
+                        <tr v-for="(loan, index) in loans" :key="loan.id">
+                            <th>
 
-                                    <small class="p-2 rounded-md flex" :class="{
-                                        'text-yellow-500': loan.loan_status.id == 1,
-                                        'bg-blue-200 text-blue-600': loan.loan_status.id == 2,
-                                        'bg-green-200 text-green-600': loan.loan_status.id == 3,
-                                        'bg-red-200 text-red-600': loan.loan_status.id == 4
+                                <small class="p-2 rounded-md flex" :class="{
+                                        'text-yellow-500': loan.loan_status.id === 1,
+                                        'bg-blue-200 text-blue-600': loan.loan_status.id === 2,
+                                        'bg-green-200 text-green-600': loan.loan_status.id === 3,
+                                        'bg-red-200 text-red-600': loan.loan_status.id === 4
                                     }">
-                                        <ClockIcon class="hidden md:block w-5 mr-1" v-if="loan.loan_status.id == 1" />
-                                        {{ loan.loan_status.name }}
-                                    </small>
-                                </th>
-                                <td>{{ formatBRL(loan.value) }}</td>
-                                <td>{{ loan.current_installment }}/{{ loan.installment_amount }}</td>
-                                <td>{{ formateDate(loan.created_at) }}</td>
-                                <td>
-                                    <InstallmentPayment />
-                                </td>
-                            </tr>
+                                    <ClockIcon class="hidden md:block w-5 mr-1" v-if="loan.loan_status.id === 1"/>
+                                    {{ loan.loan_status.name }}
+                                </small>
+                            </th>
+                            <td>{{ formatBRL(loan.value) }}</td>
+                            <td>{{ loan.current_installment }}/{{ loan.installment_amount }}</td>
+                            <td>{{ formateDate(loan.created_at) }}</td>
+                            <td>
+                                <span v-if="loan.loan_status.id === 3">Quitado</span>
+                                <InstallmentPayment v-else/>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
 
 
-
-                    <div v-if="!loans || loans == ''" class="w-full text-center mt-20">
+                    <div v-if="!loans || loans === ''" class="w-full text-center mt-20">
                         Você ainda não fez nenhuma transação.
                     </div>
                 </div>
