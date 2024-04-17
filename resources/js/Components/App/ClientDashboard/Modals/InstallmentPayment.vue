@@ -10,7 +10,6 @@ const isPixKeyCopied = ref(false);
 const copyPixToClipboard = (() => {
     isPixKeyCopied.value = true;
 });
-
 const showPaymentScreen = ref(false);
 
 defineProps({
@@ -37,21 +36,26 @@ const formatBRL = (value) => {
         minimumFractionDigits: 2
     }).format(value);
 }
+
 const formateDate = (date) => {
     return new Date(date).toLocaleDateString('pt-BR');
 }
 
-
 const handlePaymentScreen=()=>{
     showPaymentScreen.value = !showPaymentScreen.value;
 }
+
+
+// Requisicao para pagamento
+
+
 </script>
 
 <template>
     <button @click="showModal()" class="btn btn-success btn-sm  text-white"> Pagar / Detalhes</button>
 
     <dialog :id="modalID" class="modal">
-        <div v-if="showPaymentScreen" class="modal-box">
+        <div v-if="!showPaymentScreen" class="modal-box">
             <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             </form>
