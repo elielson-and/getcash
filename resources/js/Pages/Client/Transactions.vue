@@ -86,8 +86,7 @@ onMounted(() => {
                             <td>{{ loan.current_installment }}/{{ loan.installment_amount }}</td>
                             <td>{{ formateDate(loan.created_at) }}</td>
                             <td>
-                                <span v-if="loan.loan_status.id === 3">Quitado</span>
-                                <InstallmentPayment v-else/>
+                                <InstallmentPayment :loan="loan"/>
                             </td>
                         </tr>
                         </tbody>

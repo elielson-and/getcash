@@ -4,14 +4,21 @@ import CheckAnimation from '@/Lottie/CheckPayment.json';
 import { DocumentDuplicateIcon } from '@heroicons/vue/24/outline';
 import axios from "axios";
 import { onMounted, ref } from 'vue';
-
 const modalID = ref('');
-
 const isLoading = ref(false);
 const isPixKeyCopied = ref(false);
-
 const copyPixToClipboard = (() => {
     isPixKeyCopied.value = true;
+});
+
+const showPaymentScreen = ref(false);
+
+defineProps({
+    loan: {
+        type: Object,
+        default: null
+    },
+
 });
 
 onMounted(() => {
@@ -23,20 +30,61 @@ const showModal = () => {
     if (modal) modal.showModal();
 };
 
+const formatBRL = (value) => {
+    return new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+        minimumFractionDigits: 2
+    }).format(value);
+}
+const formateDate = (date) => {
+    return new Date(date).toLocaleDateString('pt-BR');
+}
+
+
+const handlePaymentScreen=()=>{
+    showPaymentScreen.value = !showPaymentScreen.value;
+}
 </script>
 
 <template>
     <button @click="showModal()" class="btn btn-success btn-sm  text-white"> Pagar / Detalhes</button>
 
     <dialog :id="modalID" class="modal">
-        <div class="modal-box">
+        <div v-if="showPaymentScreen" class="modal-box">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 class="font-bold text-lg">Detalhamento </h3>
+
+            <div class="w-full">
+<!--                detalhes do pagamento-->
+                <div class="w-full my-4 flex flex-col gap-1 rounded-sm">
+                    <div class="flex justify-between bg-gray-100 p-1"><span>Status atual</span> <span>{{ loan.loan_status.name }}</span></div>
+                    <div class="flex justify-between bg-gray-100 p-1"><span>Valor solicitado</span> <span>{{ formatBRL(loan.value) }}</span></div>
+                    <div class="flex justify-between bg-gray-100 p-1"><span>Valor total parcelado</span> <span>Vigente</span></div>
+                    <div class="flex justify-between bg-gray-100 p-1"><span>Parcela atual</span> <span>{{ loan.current_installment }}/{{ loan.installment_amount }}</span></div>
+                    <div class="flex justify-between bg-gray-100 p-1"><span>Data da solicitação</span> <span>{{ formateDate(loan.created_at) }}</span></div>
+                </div>
+
+                <div v-if="loan.loan_status.id === 3" class="w-full bg-green-100 text-green-600 p-4 text-xl">
+                    Dívida quitada em {{formateDate(loan.updated_at)}}
+                </div>
+                <button @click="handlePaymentScreen" v-else class="btn w-full bg-blue-500 hover:bg-blue-600 text-white text-xl mt-4">
+                    Pagar parcela {{ loan.current_installment }}/{{ loan.installment_amount }}
+                </button>
+            </div>
+        </div>
+
+        <!--payment-->
+        <div v-else class="modal-box">
             <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             </form>
             <h3 class="font-bold text-lg">Pague com PIX</h3>
             <!-- <p class="py-4">Press ESC key or click on ✕ button to close</p> -->
 
-            <div v-if="true" class="w-full">
+            <div v-if="true" class="w-full animate-fade-left animate-duration-300">
                 <img src="@/Images/test_qr_code.png" class="w-full max-w-[240px] mx-auto">
 
                 <p v-if="isPixKeyCopied"
@@ -61,8 +109,11 @@ const showModal = () => {
                 <button class="w-full bg-blue-500 text-white p-4 mt-8 text-xl font-bold rounded-md">Já realizei
                     o
                     pagamento</button>
+
+
+                <button @click="handlePaymentScreen" class="btn w-full mt-4">< Voltar</button>
             </div>
-            <div v-else class="w-full">
+            <div v-else class="w-full animate-fade-right animate-duration-300">
                 <Vue3Lottie class="" :animationData="CheckAnimation" :width="220" :loop="false" :speed="1" />
                 <h2 class="text-center text-xl">Recebemos seu pagamento, obrigado!</h2>
             </div>
