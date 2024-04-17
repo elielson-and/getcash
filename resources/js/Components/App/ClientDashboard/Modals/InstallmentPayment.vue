@@ -7,11 +7,9 @@ import { onMounted, ref } from 'vue';
 const modalID = ref('');
 const isLoading = ref(false);
 const isPixKeyCopied = ref(false);
-const copyPixToClipboard = (() => {
-    isPixKeyCopied.value = true;
-});
-const showPaymentScreen = ref(false);
 
+const showPaymentScreen = ref(false);
+const showPaymentConfirmButton = ref(false);
 const paymentData = ref(null);
 
 defineProps({
@@ -29,6 +27,7 @@ onMounted(() => {
 const showModal = () => {
     const modal = document.getElementById(modalID.value);
     if (modal) modal.showModal();
+    showPaymentConfirmButton.value = false;
 };
 
 const formatBRL = (value) => {
@@ -46,7 +45,27 @@ const formateDate = (date) => {
 const handlePaymentScreen=()=>{
     showPaymentScreen.value = !showPaymentScreen.value;
     generatePayment();
+
+    setTimeout(()=>{
+        showPaymentConfirmButton.value = true;
+    },5000)
 }
+
+
+const copyPixToClipboard = () => {
+    const payload = paymentData.value.pix.payload;
+    if (navigator.clipboard) { // Verifica se a API de Clipboard está disponível
+        navigator.clipboard.writeText(payload).then(() => {
+            isPixKeyCopied.value = true; // Altera o estado se a cópia for bem-sucedida
+            console.log('Texto copiado para a área de transferência!');
+        }).catch(err => {
+            console.error('Falha ao copiar texto: ', err); // Caso ocorra algum erro
+        });
+    } else {
+        console.error('Acesso à área de transferência não disponível');
+    }
+};
+
 
 
 // Requisicao para pagamento
@@ -129,9 +148,11 @@ async function generatePayment() {
                         em até 10 segundos,
                         clique no botão
                         abaixo</p>
-                    <button class="w-full bg-blue-500 text-white p-4 mt-8 text-xl font-bold rounded-md">Já realizei
-                        o
-                        pagamento</button>
+                    <button :disabled="!showPaymentConfirmButton"
+                            :class="showPaymentConfirmButton ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-100 text-gray-400'"
+                            class="w-full  p-4 mt-8 text-xl font-bold rounded-md">
+                        Já realizei o pagamento
+                    </button>
 
                 </div>
 
