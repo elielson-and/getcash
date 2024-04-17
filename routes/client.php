@@ -61,4 +61,9 @@ Route::middleware('auth', 'verified')->group(function () {
 
     // Get wallet data
     Route::get('/get-wallet', [WalletController::class, 'show']);
+
+
+
+    // Asaas payment
+    Route::post('/generate-pix-payment', [\App\Http\Controllers\AsaasPayment::class, 'create'])->name('generate-pix-payment');
 });

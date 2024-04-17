@@ -12,6 +12,8 @@ const copyPixToClipboard = (() => {
 });
 const showPaymentScreen = ref(false);
 
+const paymentData = ref(null);
+
 defineProps({
     loan: {
         type: Object,
@@ -43,11 +45,25 @@ const formateDate = (date) => {
 
 const handlePaymentScreen=()=>{
     showPaymentScreen.value = !showPaymentScreen.value;
+    generatePayment();
 }
 
 
 // Requisicao para pagamento
 
+
+async function generatePayment() {
+    isLoading.value = true;
+    try {
+        const response = await axios.post('/generate-pix-payment');
+        paymentData.value = response.data;
+        // console.log("Encoded Image: ", response.data.pix.encodedImage);
+        isLoading.value = false;
+    } catch (error) {
+        console.error('Erro ao gerar pagamento:', error);
+        isLoading.value = false;
+    }
+}
 
 </script>
 
@@ -87,32 +103,41 @@ const handlePaymentScreen=()=>{
             </form>
             <h3 class="font-bold text-lg">Pague com PIX</h3>
             <!-- <p class="py-4">Press ESC key or click on ✕ button to close</p> -->
-
             <div v-if="true" class="w-full animate-fade-left animate-duration-300">
-                <img src="@/Images/test_qr_code.png" class="w-full max-w-[240px] mx-auto">
 
-                <p v-if="isPixKeyCopied"
-                    class="text-center rounded-lg my-2 p-4 bg-green-200 text-green-900 animate-shake animate-duration-200">
-                    Chave PIX
-                    copiada para sua
-                    área de
-                    transferência</p>
+                <div v-if="paymentData" class="w-full">
+                    <img v-if="paymentData"
+                         :src="'data:image/png;base64,' + paymentData.pix.encodedImage"
+                         alt="QR Code de Pagamento"
+                         class="max-w-full mx-auto">
 
-                <div class="w-full bg-blue-50 p-3 mb-6 rounded-lg flex items-center gap-2 ">
-                    <p class="truncate">
-                        00020101021126580014br.gov.bcb.pix0136271f0939-418d-4bc5-b6b7-cb32b063fab552040000530398654040.105802BR5925ELIELSON
-                        ANDRE MENDES SIL6009SAO PAULO622905251HTSVYYM4BGGRZ5TDFJAVFCJZ6304FE56</p>
-                    <button @click="copyPixToClipboard" class="bg-blue-600 text-white py-3 px-6 rounded-lg">
-                        <DocumentDuplicateIcon class="w-6" />
-                    </button>
+
+                    <p v-if="isPixKeyCopied"
+                       class="text-center rounded-lg my-2 p-4 bg-green-200 text-green-900 animate-shake animate-duration-200">
+                        Chave PIX
+                        copiada para sua
+                        área de
+                        transferência</p>
+
+                    <div class="w-full bg-blue-50 p-3 mb-6 rounded-lg flex items-center gap-2 ">
+                        <p class="truncate">{{paymentData.pix.payload}}</p>
+                        <button @click="copyPixToClipboard" class="bg-blue-600 text-white py-3 px-6 rounded-lg">
+                            <DocumentDuplicateIcon class="w-6" />
+                        </button>
+                    </div>
+                    <p class="text-center mt-4">Caso o processamento automático não funcione
+                        em até 10 segundos,
+                        clique no botão
+                        abaixo</p>
+                    <button class="w-full bg-blue-500 text-white p-4 mt-8 text-xl font-bold rounded-md">Já realizei
+                        o
+                        pagamento</button>
+
                 </div>
-                <p class="text-center mt-4">Caso o processamento automático não funcione
-                    em até 10 segundos,
-                    clique no botão
-                    abaixo</p>
-                <button class="w-full bg-blue-500 text-white p-4 mt-8 text-xl font-bold rounded-md">Já realizei
-                    o
-                    pagamento</button>
+
+                <div v-else class="w-full p-6 flex justify-center items-center ">
+                        <p>Caregando...</p>
+                </div>
 
 
                 <button @click="handlePaymentScreen" class="btn w-full mt-4">< Voltar</button>
