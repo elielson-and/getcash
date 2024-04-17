@@ -3,7 +3,8 @@ import { Vue3Lottie } from 'vue3-lottie';
 import CheckAnimation from '@/Lottie/CheckPayment.json';
 import { DocumentDuplicateIcon } from '@heroicons/vue/24/outline';
 import axios from "axios";
-import { onMounted, ref } from 'vue';
+import {onMounted, onUnmounted, ref} from 'vue';
+import {router} from "@inertiajs/vue3";
 const modalID = ref('');
 const isLoading = ref(false);
 const isPixKeyCopied = ref(false);
@@ -48,7 +49,7 @@ const handlePaymentScreen=()=>{
 
     setTimeout(()=>{
         showPaymentConfirmButton.value = true;
-    },5000)
+    },60000)
 }
 
 
@@ -66,6 +67,20 @@ const copyPixToClipboard = () => {
     }
 };
 
+// timer payment
+const countdown = ref(60);
+function startTimer() {
+    const intervalId = setInterval(() => {
+        countdown.value--; // Decrementa o contador
+        if (countdown.value <= 0) {
+            clearInterval(intervalId); // Limpa o intervalo quando o contador chega a 0
+        }
+    }, 1000); // Atualiza a cada segundo
+
+    onUnmounted(() => {
+        clearInterval(intervalId); // Garante que o intervalo seja limpo se o componente for destruído
+    });
+}
 
 
 // Requisicao para pagamento
@@ -76,8 +91,8 @@ async function generatePayment() {
     try {
         const response = await axios.post('/generate-pix-payment');
         paymentData.value = response.data;
-        // console.log("Encoded Image: ", response.data.pix.encodedImage);
         isLoading.value = false;
+        startTimer();
     } catch (error) {
         console.error('Erro ao gerar pagamento:', error);
         isLoading.value = false;
@@ -144,11 +159,11 @@ async function generatePayment() {
                             <DocumentDuplicateIcon class="w-6" />
                         </button>
                     </div>
-                    <p class="text-center mt-4">Caso o processamento automático não funcione
-                        em até 10 segundos,
+                    <p v-if="countdown>0" class="text-center mt-4 text-lg">Caso o processamento automático não funcione
+                        em até <span class="text-blue-700 font-bold">{{countdown}} segundos</span>,
                         clique no botão
                         abaixo</p>
-                    <button :disabled="!showPaymentConfirmButton"
+                    <button :disabled="!showPaymentConfirmButton" @click="router.visit('/transacoes')"
                             :class="showPaymentConfirmButton ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-100 text-gray-400'"
                             class="w-full  p-4 mt-8 text-xl font-bold rounded-md">
                         Já realizei o pagamento
