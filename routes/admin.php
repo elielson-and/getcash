@@ -12,7 +12,7 @@ Route::middleware('auth', 'admin', 'verified')->group(function () {
 
     Route::prefix('admin')->group(function () {
         Route::get('/dashboard', function () {
-            return Inertia::render('Dashboard');
+            return Inertia::render('Admin/Dashboard');
         })->name('dashboard');
 
         Route::get('/gerenciamento', function () {
