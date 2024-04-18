@@ -20,13 +20,13 @@ Route::middleware('auth', 'admin', 'verified')->group(function () {
         })->name('admin.management');
 
 
-//        Route::get('/meu-perfil', function () {
-//            return Inertia::render('AdminProfile/Edit');
-//        })->name('admin.profile.edit');
+        Route::get('/meu-perfil', function () {
+            return Inertia::render('AdminProfile/Edit');
+        })->name('admin.profile.edit');
 
 
-
+//        Route::get('/meu-perfil', [ProfileController::class, 'edit'])->name('admin.profile.edit');
     });
-    Route::get('/meu-perfil', [ProfileController::class, 'edit'])->name('admin.profile.edit');
+
 
 });
