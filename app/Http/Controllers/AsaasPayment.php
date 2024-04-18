@@ -7,6 +7,13 @@ use Illuminate\Support\Facades\Http;
 
 class AsaasPayment extends Controller
 {
+
+    //test
+    //protected $asaas_token = '$aact_YTU5YTE0M2M2N2I4MTliNzk0YTI5N2U5MzdjNWZmNDQ6OjAwMDAwMDAwMDAwMDAwNzg3MjY6OiRhYWNoXzI5YmZiZDQ1LTk3NDAtNGE1NC1iODc3LTM1YTM1Mjc1MTYwOA==';
+    //prod
+    protected $asaas_token = '$aact_YTU5YTE0M2M2N2I4MTliNzk0YTI5N2U5MzdjNWZmNDQ6OjAwMDAwMDAwMDAwMDA0MTQ2MzE6OiRhYWNoXzAwYTBkYTExLTU3ZDktNDYyZC1iOTZlLTc2NDMzMWM3ZWVkMA==';
+    protected  $asaas_endpoint = 'https://api.asaas.com/'; // test = https://sandbox.asaas.com/api
+
     /**
      * Display a listing of the resource.
      */
@@ -18,14 +25,17 @@ class AsaasPayment extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         try {
             $response = Http::withHeaders([
                 'accept' => 'application/json',
-                'access_token' => '$aact_YTU5YTE0M2M2N2I4MTliNzk0YTI5N2U5MzdjNWZmNDQ6OjAwMDAwMDAwMDAwMDAwNzg3MjY6OiRhYWNoXzI5YmZiZDQ1LTk3NDAtNGE1NC1iODc3LTM1YTM1Mjc1MTYwOA==',
+                'access_token' => $this->asaas_token,
                 'content-type' => 'application/json',
-            ])->post('https://sandbox.asaas.com/api/v3/pix/qrCodes/static');
+            ])->post($this->asaas_endpoint.'/v3/pix/qrCodes/static',[
+                'value'=> 0.1,
+                'description'=> "descrricao teste"
+            ]);
 
             if ($response->successful()) {
                 // Aqui estamos assumindo que a resposta é um JSON e decodificamos ela
