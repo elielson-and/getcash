@@ -17,7 +17,7 @@ class Admin
     {
         if (!auth()->user() || !auth()->user()->admin) {
             // Redirecionar o usuário não autorizado
-            return redirect('entrar');
+            return redirect('login');
         }
         return $next($request);
     }

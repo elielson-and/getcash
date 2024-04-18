@@ -51,6 +51,6 @@ class AuthenticatedSessionController extends Controller
         if ($user->admin) {
             return redirect('login');
         }
-        return redirect('entrar');
+        return redirect('login');
     }
 }

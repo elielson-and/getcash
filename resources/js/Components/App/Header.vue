@@ -22,7 +22,7 @@ import { Link } from '@inertiajs/vue3';
                         segura!</h2>
                     <p class="my-6 text-2xl text-gray-600">Não realizamos <s>consulta de crédito</s>. <br> Clique no
                         botão abaixo para conferir as ofertas e valores disponíveis agora mesmo.</p>
-                    <Link :href="route('entrar')"
+                    <Link :href="route('login')"
                         class="w-64 bg-blue-500 hover:bg-blue-400 flex flex-row items-center py-4 px-10 text-white text-xl font-bold transition-all rounded-md">
                     Conferir ofertas
                     <div class="icon">

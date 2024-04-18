@@ -132,7 +132,7 @@ const submit = () => {
 
                     <p class="text-center my-4 text-gray-500">
                         Já tem cadastro?
-                        <Link href="/entrar" class=" text-blue-500 hover:underline">Login</Link>
+                        <Link href="/login" class=" text-blue-500 hover:underline">Login</Link>
                     </p>
 
                     <div class="w-full flex justify-center">

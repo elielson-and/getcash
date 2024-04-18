@@ -68,12 +68,18 @@ Route::middleware('auth')->group(function () {
 // Client auth routes
 
 Route::middleware('guest')->group(function () {
-    Route::get('/entrar', function () {
+    Route::get('/login', function () {
         return Inertia::render('Auth/Client/Login');
-    })->name('entrar');
+    })->name('login');
     Route::get('/cadastro', function () {
         return Inertia::render('Auth/Client/Register');
     });
+
+
+    //admin
+    Route::get('/admin/login', function () {
+        return Inertia::render('Auth/Login');
+    })->name('admin.login');
 });
 
 Route::middleware('auth')->group(function () {
