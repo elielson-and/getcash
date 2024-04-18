@@ -11,13 +11,11 @@ import { Link } from '@inertiajs/vue3';
 import Navbar from '@/Components/App/ClientDashboard/NavBar.vue';
 import AdminMenu from '@/Components/App/AdminDashboard/Menu.vue';
 import { Bars3BottomRightIcon } from '@heroicons/vue/24/outline';
-import { useMainStore } from '@/stores/mainStore'
+
 
 
 const showingNavigationDropdown = ref(false);
 
-const mainStore = useMainStore();
-mainStore.getClientDocStatus()
 </script>
 
 <template>

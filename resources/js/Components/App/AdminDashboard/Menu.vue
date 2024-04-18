@@ -5,8 +5,7 @@ import { LockClosedIcon, ClockIcon, ArrowsRightLeftIcon,Cog6ToothIcon } from '@h
 import { useMainStore } from '@/stores/mainStore'
 
 const { url } = usePage();
-const mainStore = useMainStore();
-mainStore.getClientDocStatus();
+
 </script>
 
 <template>
@@ -26,7 +25,7 @@ mainStore.getClientDocStatus();
             </li>
 
             <li>
-                <Link :href="route('termos')" :class="{ 'bg-gray-200': url === '/termos-de-uso' }">
+                <Link :href="route('admin.management')" :class="{ 'bg-gray-200': url === '/termos-de-uso' }">
                 <Cog6ToothIcon class="w-6"/>
 
                 Gerenciamento
@@ -35,7 +34,7 @@ mainStore.getClientDocStatus();
 
 
             <li>
-                <Link :href="route('profile.edit')" :class="{ 'bg-gray-200': url === '/perfil' }">
+                <Link :href="route('admin.profile.edit')" :class="{ 'bg-gray-200': url === '/perfil' }">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                          stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round"

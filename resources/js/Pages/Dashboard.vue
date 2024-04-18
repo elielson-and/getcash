@@ -3,21 +3,6 @@ import AdminAuthenticatedLayout from '@/Layouts/AdminAuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
-const username = 'elielson_and'; // Substitua pelo username dinâmico
-const imageUrl = ref(null);
-
-async function fetchImage() {
-    const url = `https://www.instagram.com/${username}/?__a=1`;
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        imageUrl.value = data.graphql.user.profile_pic_url_hd;
-    } catch (error) {
-        console.error('Erro ao buscar imagem:', error);
-    }
-}
-
-fetchImage();
 </script>
 
 <template>

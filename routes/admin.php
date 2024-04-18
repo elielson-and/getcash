@@ -15,17 +15,18 @@ Route::middleware('auth', 'admin', 'verified')->group(function () {
             return Inertia::render('Dashboard');
         })->name('dashboard');
 
-//        Route::get('/configuracoes', function () {
-//            return Inertia::render('Dashboard');
-//        })->name('admin.settings');
+        Route::get('/gerenciamento', function () {
+            return Inertia::render('Admin/Management');
+        })->name('admin.management');
+
+
+//        Route::get('/meu-perfil', function () {
+//            return Inertia::render('AdminProfile/Edit');
+//        })->name('admin.profile.edit');
+
+
+
     });
+    Route::get('/meu-perfil', [ProfileController::class, 'edit'])->name('admin.profile.edit');
 
-
-
-    //-------------------------------------------------------------------
-
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
