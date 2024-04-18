@@ -1,5 +1,5 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import AdminAuthenticatedLayout from '@/Layouts/AdminAuthenticatedLayout.vue';
 import Sidebar from '@/Components/App/Sidebar.vue'
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
@@ -11,7 +11,7 @@ import { ref } from 'vue';
 
     <Head title="Dashboard" />
 
-    <AuthenticatedLayout>
+    <AdminAuthenticatedLayout>
         <div class="pt-2">
             <div class="max-w-7xl flex gap-2 mx-auto sm:px-6 lg:px-8">
                 <Sidebar class="bg-white w-80 overflow-hidden shadow-sm sm:rounded-lg" />
@@ -22,5 +22,5 @@ import { ref } from 'vue';
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </AdminAuthenticatedLayout>
 </template>
